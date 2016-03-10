@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.saeid.fabloading.LoadingView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loading_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:elevation="3dp"
+    android:gravity="center"
+    app:mfl_duration="400"
+    app:mfl_onclickLoading="true"
+    />
