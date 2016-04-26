@@ -1,4 +1,4 @@
-package com.hemant.myfeed;
+package com.hemant.news;
 
 import android.app.Application;
 import android.content.Context;
@@ -13,7 +13,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.hemant.myfeed.Util.Utils;
+import com.hemant.news.Util.Utils;
 import com.squareup.picasso.Picasso;
 import com.zplesac.connectionbuddy.ConnectionBuddy;
 import com.zplesac.connectionbuddy.ConnectionBuddyConfiguration;

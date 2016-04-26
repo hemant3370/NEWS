@@ -1,4 +1,4 @@
-package com.hemant.myfeed.Activities;
+package com.hemant.news.Activities;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -34,11 +34,11 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.hemant.myfeed.R;
-import com.hemant.myfeed.Util.Utils;
-import com.hemant.myfeed.fragments.BlankFragment;
-import com.hemant.myfeed.fragments.MainFragment;
-import com.hemant.myfeed.model.Topic;
+import com.hemant.news.R;
+import com.hemant.news.Util.Utils;
+import com.hemant.news.fragments.BlankFragment;
+import com.hemant.news.fragments.MainFragment;
+import com.hemant.news.model.Topic;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.aboutlibraries.ui.LibsFragment;

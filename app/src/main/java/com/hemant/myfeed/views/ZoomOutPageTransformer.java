@@ -1,4 +1,4 @@
-package com.hemant.myfeed.views;
+package com.hemant.news.views;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.hemant.myfeed.rss;
+package com.hemant.news.rss;
 
 
 import org.xml.sax.Attributes;

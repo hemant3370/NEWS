@@ -1,4 +1,4 @@
-package com.hemant.myfeed.yalantis.flipviewpager.adapter;
+package com.hemant.news.yalantis.flipviewpager.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.hemant.myfeed.model.Topic;
+import com.hemant.news.model.Topic;
 import com.yalantis.flipviewpager.R;
 import com.yalantis.flipviewpager.utils.FlipSettings;
 import com.yalantis.flipviewpager.view.FlipViewPager;

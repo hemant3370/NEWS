@@ -1,4 +1,4 @@
-package com.hemant.myfeed;
+package com.hemant.news;
 
 import org.junit.Test;
 

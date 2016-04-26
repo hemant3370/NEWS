@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hemant.myfeed.fragments.SwipeFragment">
+    tools:context="com.hemant.news.fragments.SwipeFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

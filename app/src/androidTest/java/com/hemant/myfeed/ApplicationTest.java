@@ -1,4 +1,4 @@
-package com.hemant.myfeed;
+package com.hemant.news;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

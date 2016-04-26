@@ -1,4 +1,4 @@
-package com.hemant.myfeed.Activities;
+package com.hemant.news.Activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -36,11 +36,11 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.einmalfel.earl.Item;
-import com.hemant.myfeed.AppClass;
-import com.hemant.myfeed.R;
-import com.hemant.myfeed.Util.Utils;
-import com.hemant.myfeed.views.ZoomOutPageTransformer;
-import com.hemant.myfeed.webview.AdvancedWebView;
+import com.hemant.news.AppClass;
+import com.hemant.news.R;
+import com.hemant.news.Util.Utils;
+import com.hemant.news.views.ZoomOutPageTransformer;
+import com.hemant.news.webview.AdvancedWebView;
 import com.zplesac.connectionbuddy.ConnectionBuddy;
 import com.zplesac.connectionbuddy.cache.ConnectionBuddyCache;
 import com.zplesac.connectionbuddy.interfaces.ConnectivityChangeListener;

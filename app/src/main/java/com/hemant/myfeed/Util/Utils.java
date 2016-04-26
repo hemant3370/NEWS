@@ -1,4 +1,4 @@
-package com.hemant.myfeed.Util;
+package com.hemant.news.Util;
 
 
 
@@ -9,8 +9,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.firebase.client.snapshot.Node;
-import com.hemant.myfeed.R;
-import com.hemant.myfeed.model.Topic;
+import com.hemant.news.R;
+import com.hemant.news.model.Topic;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
