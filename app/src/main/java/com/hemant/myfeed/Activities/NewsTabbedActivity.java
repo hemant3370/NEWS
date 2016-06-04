@@ -25,6 +25,7 @@ import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
 import com.hemant.myfeed.R;
 
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,13 +54,8 @@ public class NewsTabbedActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        new GetRssFeed().execute("https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss");
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -72,7 +68,15 @@ public class NewsTabbedActivity extends AppCompatActivity {
         });
 
     }
+    public void initAdapter(){
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -186,7 +190,7 @@ public class NewsTabbedActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
+            initAdapter();
         }
     }
 }
