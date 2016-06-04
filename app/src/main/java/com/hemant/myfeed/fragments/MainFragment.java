@@ -1,4 +1,4 @@
-package com.hemant.news.fragments;
+package com.hemant.myfeed.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,14 +12,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.hemant.news.Activities.MainActivity;
-import com.hemant.news.AppClass;
-import com.hemant.news.R;
-import com.hemant.news.Util.Utils;
-import com.hemant.news.model.Topic;
+import com.hemant.myfeed.Activities.MainActivity;
+import com.hemant.myfeed.AppClass;
+import com.hemant.myfeed.R;
+import com.hemant.myfeed.Util.Utils;
+import com.hemant.myfeed.model.Topic;
 import com.squareup.picasso.Picasso;
-import com.hemant.news.yalantis.flipviewpager.adapter.BaseFlipAdapter;
-import com.hemant.news.yalantis.flipviewpager.utils.FlipSettings;
+import com.hemant.myfeed.yalantis.flipviewpager.adapter.BaseFlipAdapter;
+import com.hemant.myfeed.yalantis.flipviewpager.utils.FlipSettings;
 
 import java.util.ArrayList;
 import java.util.Iterator;

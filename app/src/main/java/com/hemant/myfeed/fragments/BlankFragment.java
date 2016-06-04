@@ -1,4 +1,4 @@
-package com.hemant.news.fragments;
+package com.hemant.myfeed.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -26,13 +26,13 @@ import android.view.animation.AnimationUtils;
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
-import com.hemant.news.AppClass;
-import com.hemant.news.Util.CustomItemClickListener;
-import com.hemant.news.R;
-import com.hemant.news.Util.RVAdapter;
-import com.hemant.news.Util.Utils;
-import com.hemant.news.rss.RssReader;
-import com.hemant.news.Activities.WebActivity;
+import com.hemant.myfeed.AppClass;
+import com.hemant.myfeed.Util.CustomItemClickListener;
+import com.hemant.myfeed.R;
+import com.hemant.myfeed.Util.RVAdapter;
+import com.hemant.myfeed.Util.Utils;
+import com.hemant.myfeed.rss.RssReader;
+import com.hemant.myfeed.Activities.WebActivity;
 
 import java.io.InputStream;
 import java.net.URL;

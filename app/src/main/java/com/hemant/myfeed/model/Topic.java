@@ -1,4 +1,4 @@
-package com.hemant.news.model;
+package com.hemant.myfeed.model;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;

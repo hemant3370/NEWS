@@ -1,4 +1,4 @@
-package com.hemant.news.Util;
+package com.hemant.myfeed.Util;
 
 import android.view.View;
 

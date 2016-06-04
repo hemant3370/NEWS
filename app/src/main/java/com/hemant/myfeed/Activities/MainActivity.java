@@ -1,4 +1,4 @@
-package com.hemant.news.Activities;
+package com.hemant.myfeed.Activities;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -34,11 +34,11 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.hemant.news.R;
-import com.hemant.news.Util.Utils;
-import com.hemant.news.fragments.BlankFragment;
-import com.hemant.news.fragments.MainFragment;
-import com.hemant.news.model.Topic;
+import com.hemant.myfeed.R;
+import com.hemant.myfeed.Util.Utils;
+import com.hemant.myfeed.fragments.BlankFragment;
+import com.hemant.myfeed.fragments.MainFragment;
+import com.hemant.myfeed.model.Topic;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.aboutlibraries.ui.LibsFragment;
@@ -160,12 +160,12 @@ public class MainActivity extends AppCompatActivity
                     Utils.links.add(dummy);
                 }
 
-                Utils.TOPICs.add(new Topic(R.drawable.world, "World ", "http://www.faroo.com/api?q=world&start=1&length=9&l=en&src=news&f=rss", R.color.purple, Utils.links.get(5)));
-                Utils.TOPICs.add(new Topic(R.drawable.sports, "Sports", "http://www.faroo.com/api?q=sports&start=1&length=9&l=en&src=news&f=rss", R.color.saffron, Utils.links.get(4)));
-                Utils.TOPICs.add(new Topic(R.drawable.science, "Science", "http://www.faroo.com/api?q=&science=1&length=9&l=en&src=news&f=rss", R.color.green, Utils.links.get(3)));
-                Utils.TOPICs.add(new Topic(R.drawable.politics, "Politics", "http://www.faroo.com/api?q=politics&start=1&length=9&l=en&src=news&f=rss", R.color.colorAccent, Utils.links.get(2)));
-                Utils.TOPICs.add(new Topic(R.drawable.entertainment, "Entertainment", "http://www.faroo.com/api?q=entertainment&start=1&length=9&l=en&src=news&f=rss", R.color.orange, Utils.links.get(0)));
-                Utils.TOPICs.add(new Topic(R.drawable.healthormedical, "Health", "http://www.faroo.com/api?q=health&start=1&length=9&l=en&src=news&f=rss", R.color.saffron, Utils.links.get(1)));
+                Utils.TOPICs.add(new Topic(R.drawable.world, "World ", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.purple, Utils.links.get(5)));
+                Utils.TOPICs.add(new Topic(R.drawable.sports, "Sports", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.saffron, Utils.links.get(4)));
+                Utils.TOPICs.add(new Topic(R.drawable.science, "Science", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.green, Utils.links.get(3)));
+                Utils.TOPICs.add(new Topic(R.drawable.politics, "Politics", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.colorAccent, Utils.links.get(2)));
+                Utils.TOPICs.add(new Topic(R.drawable.entertainment, "Entertainment", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.orange, Utils.links.get(0)));
+                Utils.TOPICs.add(new Topic(R.drawable.healthormedical, "Health", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.saffron, Utils.links.get(1)));
 //             TOPICs.add(new Topic(R.drawable.health, "http://www.jokesareawesome.com/rss/latest/25/", R.color.green, links.get(6),"Reuters", "Guardian", "BBC", "CNN", "NY Times","Hindu"));
 //             TOPICs.add(new Topic(R.drawable.yalantis, "YALANTIS", R.color.purple,links.get(0),"Reuters", "Guardian", "BBC", "CNN", "NY Times","Hindu"));
                 mLoadingView.pauseAnimation();

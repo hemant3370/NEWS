@@ -1,11 +1,11 @@
-package com.hemant.news.Util;
+package com.hemant.myfeed.Util;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import com.hemant.news.AppClass;
+import com.hemant.myfeed.AppClass;
 
 import java.lang.ref.WeakReference;
 

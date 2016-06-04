@@ -1,4 +1,4 @@
-package com.hemant.news.Util;
+package com.hemant.myfeed.Util;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.einmalfel.earl.Item;
 
-import com.hemant.news.R;
+import com.hemant.myfeed.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;

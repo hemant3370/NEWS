@@ -1,4 +1,4 @@
-package com.hemant.news.yalantis.flipviewpager.utils;
+package com.hemant.myfeed.yalantis.flipviewpager.utils;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.hemant.news.rss;
+package com.hemant.myfeed.rss;
 
 
 import org.xml.sax.Attributes;
@@ -26,8 +26,8 @@ import java.util.List;
 
 
 public class RssHandler extends DefaultHandler {
-    private List<RssItem> rssItemList;
-    private RssItem currentItem;
+    private List<com.hemant.myfeed.rss.RssItem> rssItemList;
+    private com.hemant.myfeed.rss.RssItem currentItem;
     private boolean parsingTitle;
     private boolean parsingLink;
     private boolean parsingDescription;

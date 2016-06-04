@@ -1,4 +1,4 @@
-package com.hemant.news.rss;
+package com.hemant.myfeed.rss;
 
 /*
  * Copyright (C) 2014 Shirwa Mohamed <shirwa99@gmail.com>

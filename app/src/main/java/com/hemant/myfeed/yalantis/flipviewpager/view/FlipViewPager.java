@@ -1,4 +1,4 @@
-package com.hemant.news.yalantis.flipviewpager.view;
+package com.hemant.myfeed.yalantis.flipviewpager.view;
 
 import android.content.Context;
 import android.graphics.Camera;

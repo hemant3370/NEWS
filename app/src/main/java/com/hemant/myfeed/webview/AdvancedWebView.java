@@ -1,4 +1,4 @@
-package com.hemant.news.webview;
+package com.hemant.myfeed.webview;
 
 
 import android.view.ViewGroup;

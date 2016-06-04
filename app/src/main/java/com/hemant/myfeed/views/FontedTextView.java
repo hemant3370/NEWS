@@ -1,4 +1,4 @@
-package com.hemant.news.views;
+package com.hemant.myfeed.views;
 
 import android.content.Context;
 import android.graphics.Typeface;

@@ -1,4 +1,4 @@
-package com.hemant.news.pojo;
+package com.hemant.myfeed.pojo;
 
 /**
  * Created by anuraggupta on 07/02/16.

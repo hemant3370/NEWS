@@ -1,4 +1,4 @@
-package com.hemant.news.rss;
+package com.hemant.myfeed.rss;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
