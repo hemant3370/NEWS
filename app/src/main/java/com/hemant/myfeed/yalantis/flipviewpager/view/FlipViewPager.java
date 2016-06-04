@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.EdgeEffect;
@@ -74,7 +73,7 @@ public class FlipViewPager extends FrameLayout {
 
     // Internal interface to store page position
     public interface OnChangePageListener {
-        public void onFlipped(int page);
+        void onFlipped(int page);
     }
 
     class PageItem {
