@@ -493,6 +493,7 @@ public class FlipViewPager extends FrameLayout {
             flipped=false; Log.d("FlipDistance", "Flipped Cancel");
             return;
         }
-        flipped=!flipped; }
+        flipped=!flipped;
+    }
 
 }
