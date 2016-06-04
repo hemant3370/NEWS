@@ -153,11 +153,13 @@ public class MainFragment extends Fragment{
                 holder.infoPage = getActivity().getLayoutInflater().inflate(R.layout.friends_info, parent, false);
                 for (int id : IDS_INTEREST) {
                     holder.interests.add((Button) holder.infoPage.findViewById(id));
+
                 }
                 convertView.setTag(holder);
             } else {
                 holder = (FriendsHolder) convertView.getTag();
             }
+
 
             switch (position) {
                 // Merged page with 2 TOPICs

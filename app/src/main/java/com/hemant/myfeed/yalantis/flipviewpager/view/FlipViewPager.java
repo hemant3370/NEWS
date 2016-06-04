@@ -8,10 +8,12 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.EdgeEffect;
@@ -60,7 +62,7 @@ public class FlipViewPager extends FrameLayout {
 
     private boolean flipping;
     private boolean overFlipping;
-
+    private boolean flipped=false;
     private float mFlipDistance = -1;
     private int mTouchSlop;
 
@@ -197,6 +199,9 @@ public class FlipViewPager extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if(flipped) {
+            return false;
+        }
         int action = ev.getAction() & MotionEvent.ACTION_MASK;
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
             toggleFlip(false);
@@ -478,9 +483,16 @@ public class FlipViewPager extends FrameLayout {
     }
 
     public void flipToPage(int page) {
-        int delta = page * FLIP_DISTANCE - (int) mFlipDistance;
-        endFlip();
+        int delta = page * FLIP_DISTANCE - (int) mFlipDistance; endFlip();
         mScroller.startScroll(0, (int) mFlipDistance, 0, delta, getFlipDuration(delta));
-        invalidate();
-    }
+        invalidate(); Log.d("FlipDistance", "delta " + delta + " mFlipDistance " + mFlipDistance);
+        if(delta <=0 && delta >-90){ flipped=false; Log.d("FlipDistance", "Flipped Cancel");
+            return;
+        }
+        if(delta >=0 && delta < 90){
+            flipped=false; Log.d("FlipDistance", "Flipped Cancel");
+            return;
+        }
+        flipped=!flipped; }
+
 }
