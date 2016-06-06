@@ -1,5 +1,6 @@
 package com.hemant.myfeed.Activities;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,15 +19,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
 import com.hemant.myfeed.R;
+import com.hemant.myfeed.rss.RssItem;
+import com.squareup.picasso.Picasso;
 
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -54,6 +63,7 @@ public class NewsTabbedActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        RssItems = new ArrayList<>();
         new GetRssFeed().execute("https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss");
 
 
@@ -109,7 +119,7 @@ public class NewsTabbedActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-
+         public Item newsitem;
         public PlaceholderFragment() {
         }
 
@@ -121,6 +131,7 @@ public class NewsTabbedActivity extends AppCompatActivity {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+
             fragment.setArguments(args);
             return fragment;
         }
@@ -130,7 +141,26 @@ public class NewsTabbedActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_news_tabbed, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            textView.setText(newsitem.getTitle());
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
+            WebView webView = (WebView) rootView.findViewById(R.id.webView);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+            webView.setWebChromeClient(new WebChromeClient(){
+            });
+            webView.loadDataWithBaseURL(null, "<html>" + newsitem.getDescription() + "</html>", "text/html", "utf-8", null);
+            if(newsitem.getImageLink() != null) {
+                Picasso.with(getContext()).load((newsitem.getImageLink())).into(imageView);
+            }
+            else {
+
+                Uri data = Uri.parse(newsitem.getLink());
+                try {
+                    Picasso.with(getContext()).load(new String(String.valueOf(new URL(data.getScheme(), data.getHost(), "/favicon.ico")))).into(imageView);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
             return rootView;
         }
     }
@@ -149,7 +179,9 @@ public class NewsTabbedActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            PlaceholderFragment placeholderFragment = PlaceholderFragment.newInstance(position + 1);
+            placeholderFragment.newsitem = RssItems.get(position );
+            return placeholderFragment;
         }
 
         @Override

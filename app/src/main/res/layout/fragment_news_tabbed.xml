@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
         android:layout_alignBottom="@+id/section_label"
+        android:layout_alignParentBottom="true"
         android:id="@+id/webView" >
     </WebView>
 
