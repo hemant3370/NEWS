@@ -31,7 +31,7 @@ import com.hemant.myfeed.Util.CustomItemClickListener;
 import com.hemant.myfeed.R;
 import com.hemant.myfeed.Util.RVAdapter;
 import com.hemant.myfeed.Util.Utils;
-import com.hemant.myfeed.rss.RssReader;
+
 import com.hemant.myfeed.Activities.WebActivity;
 
 import java.io.InputStream;

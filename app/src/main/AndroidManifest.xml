@@ -3,6 +3,9 @@
     package="com.hemant.myfeed">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"  />
+
 
     <application
         android:name=".AppClass"
@@ -13,23 +16,27 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activities.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".Activities.WebActivity"
-            android:label="@string/title_activity_web"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".Activities.NewsTabbedActivity"
-            android:label="@string/title_activity_news_tabbed"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activities.WebActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_web"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activities.NewsTabbedActivity"
+            android:label="@string/title_activity_news_tabbed"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

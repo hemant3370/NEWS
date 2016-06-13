@@ -50,6 +50,7 @@ import com.zplesac.connectionbuddy.models.ConnectivityEvent;
 import com.zplesac.connectionbuddy.models.ConnectivityState;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         BlankFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
         ConnectivityChangeListener{
+    public static final String URLFORTABACTIVITY = "" ;
     android.support.v4.app.FragmentTransaction fragmentTransaction;
     LoadingView mLoadingView;
 
@@ -160,12 +162,12 @@ public class MainActivity extends AppCompatActivity
                     Utils.links.add(dummy);
                 }
 
-                Utils.TOPICs.add(new Topic(R.drawable.world, "World ", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.purple, Utils.links.get(5)));
-                Utils.TOPICs.add(new Topic(R.drawable.sports, "Sports", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.saffron, Utils.links.get(4)));
-                Utils.TOPICs.add(new Topic(R.drawable.science, "Science", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.green, Utils.links.get(3)));
-                Utils.TOPICs.add(new Topic(R.drawable.politics, "Politics", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.colorAccent, Utils.links.get(2)));
-                Utils.TOPICs.add(new Topic(R.drawable.entertainment, "Entertainment", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.orange, Utils.links.get(0)));
-                Utils.TOPICs.add(new Topic(R.drawable.healthormedical, "Health", "https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss", R.color.saffron, Utils.links.get(1)));
+                Utils.TOPICs.add(new Topic(R.drawable.world, "World ", Utils.links.get(5).get("Reuters"), R.color.purple, Utils.links.get(5)));
+                Utils.TOPICs.add(new Topic(R.drawable.sports, "Sports", Utils.links.get(5).get("Reuters"), R.color.saffron, Utils.links.get(4)));
+                Utils.TOPICs.add(new Topic(R.drawable.science, "Science", Utils.links.get(5).get("Reuters"), R.color.green, Utils.links.get(3)));
+                Utils.TOPICs.add(new Topic(R.drawable.politics, "Politics", Utils.links.get(1).get("Reuters"), R.color.colorAccent, Utils.links.get(2)));
+                Utils.TOPICs.add(new Topic(R.drawable.entertainment, "Entertainment", Utils.links.get(5).get("Reuters"), R.color.orange, Utils.links.get(0)));
+                Utils.TOPICs.add(new Topic(R.drawable.healthormedical, "Health", Utils.links.get(5).get("Reuters"), R.color.saffron, Utils.links.get(1)));
 //             TOPICs.add(new Topic(R.drawable.health, "http://www.jokesareawesome.com/rss/latest/25/", R.color.green, links.get(6),"Reuters", "Guardian", "BBC", "CNN", "NY Times","Hindu"));
 //             TOPICs.add(new Topic(R.drawable.yalantis, "YALANTIS", R.color.purple,links.get(0),"Reuters", "Guardian", "BBC", "CNN", "NY Times","Hindu"));
                 mLoadingView.pauseAnimation();
@@ -259,6 +261,9 @@ public void showFragment(Fragment fragmentToSet){
     public void setUrl(String mUrl){
         showFragment(BlankFragment.newInstance(mUrl)
         );
+//        Intent intent = new Intent(this, NewsTabbedActivity.class);
+//        intent.putExtra(URLFORTABACTIVITY, mUrl);
+//        startActivity(intent);
     }
 public void showHomeFragment(){
     if (mainFragment == null){

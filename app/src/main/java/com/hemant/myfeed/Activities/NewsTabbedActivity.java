@@ -1,5 +1,6 @@
 package com.hemant.myfeed.Activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
@@ -23,14 +24,16 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
+import com.einmalfel.earl.RSSFeed;
+import com.einmalfel.earl.RSSItem;
 import com.hemant.myfeed.R;
-import com.hemant.myfeed.rss.RssItem;
 import com.squareup.picasso.Picasso;
 
 
@@ -60,11 +63,12 @@ public class NewsTabbedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_tabbed);
-
+        Intent intent = getIntent();
+        String url = intent.getStringExtra(MainActivity.URLFORTABACTIVITY);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         RssItems = new ArrayList<>();
-        new GetRssFeed().execute("https://news.google.co.in/news?cf=all&hl=en&pz=1&ned=in&output=rss");
+        new GetRssFeed().execute(url);
 
 
 
@@ -142,13 +146,16 @@ public class NewsTabbedActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_news_tabbed, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(newsitem.getTitle());
+
             ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
             WebView webView = (WebView) rootView.findViewById(R.id.webView);
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-            webView.setWebChromeClient(new WebChromeClient(){
-            });
+//            webView.setWebViewClient(new WebViewClient());
+            webView.setWebChromeClient(new WebChromeClient());
+            webView.getSettings().setDomStorageEnabled(true);
             webView.loadDataWithBaseURL(null, "<html>" + newsitem.getDescription() + "</html>", "text/html", "utf-8", null);
+
             if(newsitem.getImageLink() != null) {
                 Picasso.with(getContext()).load((newsitem.getImageLink())).into(imageView);
             }
@@ -202,17 +209,10 @@ public class NewsTabbedActivity extends AppCompatActivity {
             try {
                 InputStream inputStream = new URL(params[0]).openConnection().getInputStream();
                 Feed feed = EarlParser.parseOrThrow(inputStream, 0);
-                int i = 0;
                 for (Item item : feed.getItems()) {
-                    if (i < 8) {
-                        RssItems.add(item);
-                    }
-                    else {
-                        continue;
-                    }
-                    i++;
-                }
 
+                    RssItems.add( item);
+                }
             } catch (Exception e) {
                 Log.v("Error Parsing Data", e + "");
             }

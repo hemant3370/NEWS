@@ -32,7 +32,11 @@ public class Topic {
 
     public List<String> links = new ArrayList<>();
 
-    public Topic(int avatar, String topic, String mainLink, int background, Map<String, String> linkTopicPair) {
+    public Topic(int avatar,
+                 String topic,
+                 String mainLink,
+                 int background,
+                 Map<String, String> linkTopicPair) {
         this.avatar = avatar;
         this.topic = topic;
         this.background = background;
