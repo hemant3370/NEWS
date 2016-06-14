@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
+import com.anupcowkur.reservoir.Reservoir;
 import com.einmalfel.earl.Item;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -38,7 +39,11 @@ public class AppClass extends Application{
         Firebase.setAndroidContext(this);
         ConnectionBuddyConfiguration networkInspectorConfiguration = new ConnectionBuddyConfiguration.Builder(this).build();
         ConnectionBuddy.getInstance().init(networkInspectorConfiguration);
-
+        try {
+            Reservoir.init(this, 1024); //in bytes
+        } catch (Exception e) {
+            //failure
+        }
     }
     @Override
     public void onTerminate() {

@@ -1,8 +1,10 @@
 package com.hemant.myfeed.Util;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +27,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,11 +42,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         @Bind(R.id.cv)
         CardView cv;
         @Bind(R.id.person_name)
-        TextView personName;
+        TextView titleLabel;
         @Bind(R.id.person_age)
-        WebView personAge;
+        WebView webview;
         @Bind(R.id.person_photo)
-        ImageView personPhoto;
+        ImageView Photo;
 
         PersonViewHolder(View itemView) {
             super(itemView);
@@ -89,24 +94,42 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
     @Override
     public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
-        personViewHolder.personName.setText(RssItems.get(i).getTitle());
-        personViewHolder.personAge.getSettings().setJavaScriptEnabled(true);
-        personViewHolder.personAge.setWebChromeClient(new WebChromeClient(){
+        personViewHolder.titleLabel.setText(RssItems.get(i).getTitle());
+        personViewHolder.webview.getSettings().setJavaScriptEnabled(true);
+        personViewHolder.webview.setWebChromeClient(new WebChromeClient(){
         });
-        personViewHolder.personAge.loadDataWithBaseURL(null, "<html>" + RssItems.get(i).getDescription() + "</html>", "text/html", "utf-8", null);
+        personViewHolder.webview.getSettings().setLoadsImagesAutomatically(false);
+        personViewHolder.webview.loadDataWithBaseURL(null, "<html>" + RssItems.get(i).getDescription() + "</html>", "text/html", "utf-8", null);
+
         if(RssItems.get(i).getImageLink() != null) {
-            Picasso.with(mContext).load((RssItems.get(i).getImageLink())).into(personViewHolder.personPhoto);
+            Picasso.with(mContext).load((RssItems.get(i).getImageLink())).into(personViewHolder.Photo);
         }
         else {
+            String html = RssItems.get(i).getDescription();
+            String imgRegex = "<[iI][mM][gG][^>]+[sS][rR][cC]\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>";
 
-        Uri data = Uri.parse(RssItems.get(i).getLink());
-        try {
-            Picasso.with(mContext).load(new String(String.valueOf(new URL(data.getScheme(), data.getHost(), "/favicon.ico")))).into(personViewHolder.personPhoto);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Pattern p = Pattern.compile(imgRegex);
+            Matcher m = p.matcher(html);
+
+            if (m.find()) {
+                try {
+                    Picasso.with(mContext).load(String.valueOf(new URL(m.group(1)))).into(personViewHolder.Photo);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+
+                Uri data = Uri.parse(RssItems.get(i).getLink());
+                try {
+                    Picasso.with(mContext).load(new String(String.valueOf(new URL(data.getScheme(), data.getHost(), "/favicon.ico")))).into(personViewHolder.Photo);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
 
-        }
         setAnimation(personViewHolder.cv, i);
     }
     private void setAnimation(View viewToAnimate, int position)

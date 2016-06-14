@@ -12,19 +12,16 @@
             android:id="@+id/nav_gallary"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Random" />
-    </group>
 
-    <item android:title="Communicate">
-        <menu>
+
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:icon="@android:drawable/btn_star_big_on"
+                android:title="Rate" />
             <item
                 android:id="@+id/nav_about"
-                android:icon="@android:drawable/ic_menu_agenda"
+                android:icon="@android:drawable/ic_dialog_info"
                 android:title="About" />
-        </menu>
-    </item>
 
+         </group>
 </menu>

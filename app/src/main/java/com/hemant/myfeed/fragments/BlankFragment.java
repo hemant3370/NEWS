@@ -61,10 +61,8 @@ public class BlankFragment extends Fragment {
     private final Handler mHandler = new Handler();
     private final Runnable mUpdateUI = new Runnable() {
         public void run() {
-
-
             mLoadingView.performClick();
-            mHandler.postDelayed(mUpdateUI, 1001);
+            mHandler.postDelayed(mUpdateUI, 2002);
         }
     };
     @Bind(R.id.rv)
@@ -146,9 +144,6 @@ public class BlankFragment extends Fragment {
 //        new GetRssFeed().execute("http://feeds.reuters.com/reuters/INoddlyEnoughNews");
         return rootView;
     }
-    private void initializeData(){
-
-    }
 
     private void initializeAdapter(){
         RVAdapter adapter = new RVAdapter(getActivity(), RssItems, new CustomItemClickListener() {
@@ -165,6 +160,7 @@ public class BlankFragment extends Fragment {
         rv.setAdapter(adapter);
         if(progressDialog.isShowing())
         progressDialog.dismiss();
+        rv.setItemViewCacheSize(10);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -213,13 +209,7 @@ public class BlankFragment extends Fragment {
                 Feed feed = EarlParser.parseOrThrow(inputStream, 0);
                 int i = 0;
                 for (Item item : feed.getItems()) {
-                    if (i < 8) {
                         RssItems.add(item);
-                    }
-                    else {
-                        continue;
-                    }
-                    i++;
                 }
 
             } catch (Exception e) {
@@ -231,7 +221,7 @@ public class BlankFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            initializeData();
+
             initializeAdapter();
         }
     }

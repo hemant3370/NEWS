@@ -14,7 +14,7 @@
         android:layout_height="0dp"
          android:paddingTop="60dp"
         android:layout_weight="1"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimary"
         >
 
     </FrameLayout>

@@ -1,8 +1,11 @@
 package com.hemant.myfeed.Activities;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -30,10 +33,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 
+import com.anupcowkur.reservoir.Reservoir;
+import com.anupcowkur.reservoir.ReservoirGetCallback;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.gson.reflect.TypeToken;
 import com.hemant.myfeed.R;
 import com.hemant.myfeed.Util.Utils;
 import com.hemant.myfeed.fragments.BlankFragment;
@@ -43,13 +49,16 @@ import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.aboutlibraries.ui.LibsFragment;
 import com.mikepenz.aboutlibraries.ui.LibsSupportFragment;
+import com.mikepenz.aboutlibraries.util.Util;
 import com.zplesac.connectionbuddy.ConnectionBuddy;
 import com.zplesac.connectionbuddy.cache.ConnectionBuddyCache;
 import com.zplesac.connectionbuddy.interfaces.ConnectivityChangeListener;
 import com.zplesac.connectionbuddy.models.ConnectivityEvent;
 import com.zplesac.connectionbuddy.models.ConnectivityState;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -130,13 +139,13 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         if(!isOnline()){
             Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("UNDO", new View.OnClickListener() {
+                    .make(coordinatorLayout, "No Internet !!", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Settings", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
@@ -149,6 +158,23 @@ public class MainActivity extends AppCompatActivity
             progressDialog.dismiss();
 
         }
+
+                Type resultType = new TypeToken<List<Map<String, String>>>() {
+                }.getType();
+                try {
+                    Utils.links = Reservoir.get("myKey", resultType);
+                    mLoadingView.pauseAnimation();
+                    mHandler.removeCallbacks(mUpdateUI);
+                    progressDialog.dismiss();
+                    showHomeFragment();
+                } catch (Exception e) {
+                    //failure
+                getFromFirebase();
+                }
+
+    }
+
+    public void getFromFirebase(){
         Firebase myFirebaseRef = new Firebase("https://knowfeed.firebaseio.com/");
 
         myFirebaseRef.child("links").addValueEventListener(new ValueEventListener() {
@@ -160,26 +186,38 @@ public class MainActivity extends AppCompatActivity
                         dummy.put(topicSnapshot.getKey(), (String) topicSnapshot.getValue());
                     }
                     Utils.links.add(dummy);
-                }
 
+                }
+                try {
+                    Reservoir.delete("myKey");
+                } catch (Exception e) {
+                    //failure
+                }
+                try {
+                    Reservoir.put("myKey", Utils.links);
+
+                } catch (Exception e) {
+                    //failure;
+                }
                 Utils.TOPICs.add(new Topic(R.drawable.world, "World ", Utils.links.get(5).get("Reuters"), R.color.purple, Utils.links.get(5)));
-                Utils.TOPICs.add(new Topic(R.drawable.sports, "Sports", Utils.links.get(5).get("Reuters"), R.color.saffron, Utils.links.get(4)));
-                Utils.TOPICs.add(new Topic(R.drawable.science, "Science", Utils.links.get(5).get("Reuters"), R.color.green, Utils.links.get(3)));
-                Utils.TOPICs.add(new Topic(R.drawable.politics, "Politics", Utils.links.get(1).get("Reuters"), R.color.colorAccent, Utils.links.get(2)));
-                Utils.TOPICs.add(new Topic(R.drawable.entertainment, "Entertainment", Utils.links.get(5).get("Reuters"), R.color.orange, Utils.links.get(0)));
-                Utils.TOPICs.add(new Topic(R.drawable.healthormedical, "Health", Utils.links.get(5).get("Reuters"), R.color.saffron, Utils.links.get(1)));
-//             TOPICs.add(new Topic(R.drawable.health, "http://www.jokesareawesome.com/rss/latest/25/", R.color.green, links.get(6),"Reuters", "Guardian", "BBC", "CNN", "NY Times","Hindu"));
-//             TOPICs.add(new Topic(R.drawable.yalantis, "YALANTIS", R.color.purple,links.get(0),"Reuters", "Guardian", "BBC", "CNN", "NY Times","Hindu"));
+                Utils.TOPICs.add(new Topic(R.drawable.sports, "Sports", Utils.links.get(4).get("Reuters"), R.color.saffron, Utils.links.get(4)));
+                Utils.TOPICs.add(new Topic(R.drawable.science, "Science", Utils.links.get(3).get("Reuters"), R.color.green, Utils.links.get(3)));
+                Utils.TOPICs.add(new Topic(R.drawable.politics, "Politics", Utils.links.get(2).get("Reuters"), R.color.colorAccent, Utils.links.get(2)));
+                Utils.TOPICs.add(new Topic(R.drawable.entertainment, "Entertainment", Utils.links.get(0).get("Reuters"), R.color.orange, Utils.links.get(0)));
+                Utils.TOPICs.add(new Topic(R.drawable.healthormedical, "Health", Utils.links.get(1).get("Reuters"), R.color.saffron, Utils.links.get(1)));
+
                 mLoadingView.pauseAnimation();
                 mHandler.removeCallbacks(mUpdateUI);
                 progressDialog.dismiss();
                 showHomeFragment();
             }
+
             @Override
             public void onCancelled(FirebaseError error) {
             }
         });
     }
+
     public boolean isOnline() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -199,27 +237,27 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -233,7 +271,12 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_gallary) {
           showFragment(BlankFragment.newInstance(url));
-        }else if (id == R.id.nav_about) {
+
+        }
+        else if (id == R.id.nav_share) {
+            openAppRating(this);
+        }
+        else if (id == R.id.nav_about) {
             LibsSupportFragment fragment = new LibsBuilder()
                     .withVersionShown(false)
                     .withLicenseShown(false)
@@ -299,7 +342,36 @@ public void showHomeFragment(){
             snackbar.show();
         }
     }
+    public static void openAppRating(Context context) {
+        Intent rateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://dev?id=6565132919084735503"));
+        boolean marketFound = false;
 
+        // find all applications able to handle our rateIntent
+        final List<ResolveInfo> otherApps = context.getPackageManager().queryIntentActivities(rateIntent, 0);
+        for (ResolveInfo otherApp : otherApps) {
+            // look for Google Play application
+            if (otherApp.activityInfo.applicationInfo.packageName.equals("com.android.vending")) {
+
+                ActivityInfo otherAppActivity = otherApp.activityInfo;
+                ComponentName componentName = new ComponentName(
+                        otherAppActivity.applicationInfo.packageName,
+                        otherAppActivity.name
+                );
+                rateIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                rateIntent.setComponent(componentName);
+                context.startActivity(rateIntent);
+                marketFound = true;
+                break;
+
+            }
+        }
+
+        // if GP not present on device, open web browser
+        if (!marketFound) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/dev?id=6565132919084735503"));
+            context.startActivity(webIntent);
+        }
+    }
     @Override
     protected void onStop() {
         super.onStop();

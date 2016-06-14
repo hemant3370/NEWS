@@ -1,15 +1,13 @@
 package com.hemant.myfeed.Activities;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,8 +18,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,15 +26,14 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import com.einmalfel.earl.Item;
 import com.hemant.myfeed.AppClass;
 import com.hemant.myfeed.R;
 import com.hemant.myfeed.Util.Utils;
+import com.hemant.myfeed.Util.Attachment;
+import com.hemant.myfeed.Util.MHTUnpack;
 import com.hemant.myfeed.views.ZoomOutPageTransformer;
 import com.hemant.myfeed.webview.AdvancedWebView;
 import com.zplesac.connectionbuddy.ConnectionBuddy;
@@ -47,7 +42,12 @@ import com.zplesac.connectionbuddy.interfaces.ConnectivityChangeListener;
 import com.zplesac.connectionbuddy.models.ConnectivityEvent;
 import com.zplesac.connectionbuddy.models.ConnectivityState;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.mail.MessagingException;
 
 import io.saeid.fabloading.LoadingView;
 import it.neokree.materialtabs.MaterialTab;
@@ -102,7 +102,7 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
         int position = getIntent().getIntExtra("position",0);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-//        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(1);
         mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -148,27 +148,8 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_web, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onConnectionChange(ConnectivityEvent event) {
@@ -181,8 +162,8 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
             final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
                     .main_content);
             Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("UNDO", new View.OnClickListener() {
+                    .make(coordinatorLayout, "No Internet !!!", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Settings", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
@@ -212,11 +193,11 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
 
 
                 mLoadingView.performClick();
-                mHandler.postDelayed(mUpdateUI, 1001);
+                mHandler.postDelayed(mUpdateUI, 2001);
             }
         };
         private static final String ARG_SECTION_NUMBER = "section_number";
-        private AdvancedWebView webView;
+        private WebView webView;
         public PlaceholderFragment() {
         }
 
@@ -236,10 +217,10 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_web2, container, false);
-             webView = (AdvancedWebView) rootView.findViewById(R.id.tabwebview);
+            webView = (AdvancedWebView) rootView.findViewById(R.id.tabwebview);
             webView.getSettings().setBuiltInZoomControls(true);
             webView.getSettings().setDefaultFontSize(20);
-//            webView.setWebViewClient(new WebViewClient());
+
             final Dialog progressDialog = new Dialog(getActivity());
             progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             progressDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -248,7 +229,7 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
             Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.flipy);
             rotation.setFillAfter(true);
             progressDialog.setContentView(R.layout.loadingview);
-            mLoadingView = (LoadingView) progressDialog.findViewById( R.id.loading_view);
+            mLoadingView = (LoadingView) progressDialog.findViewById(R.id.loading_view);
             mLoadingView.addAnimation(Color.parseColor("#FFD200"), Utils.marvel_1,
                     LoadingView.FROM_LEFT);
             mLoadingView.addAnimation(Color.parseColor("#2F5DA9"), Utils.marvel_2,
@@ -259,21 +240,90 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
                     LoadingView.FROM_BOTTOM);
             mLoadingView.startAnimation(rotation);
             mHandler.post(mUpdateUI);
-            webView.setWebChromeClient(new WebChromeClient(){
+            webView.setWebChromeClient(new WebChromeClient() {
                 @Override
                 public void onProgressChanged(WebView view, int newProgress) {
                     super.onProgressChanged(view, newProgress);
-                    if(newProgress > 90){
+                    if (newProgress == 90) {
                         progressDialog.dismiss();
                         mHandler.removeCallbacks(mUpdateUI);
+//                        try {
+//                            File sdCard = Environment.getExternalStorageDirectory();
+//                            File dir = new File(sdCard.getAbsolutePath() + "/NEWS/");
+//                            if (!dir.exists()) {
+//                                dir.mkdirs();
+//                            }
+//                            webView.saveWebArchive(dir.toString() + File.separator + getArguments().getString(ARG_SECTION_NUMBER).hashCode() + ".mht");
+//
+//                        } catch (Exception e) {
+//                            // TODO: handle exception
+//                        }
                     }
-
                 }
+
             });
-            webView.setListener(getActivity(),this);
-            webView.setThirdPartyCookiesEnabled(false);
+//            webView.setWebViewClient(new WebViewClient(){
+//
+//                @Override
+//                public void onPageFinished(WebView view, String url) {
+//                    super.onPageFinished(view, url);
+//                    progressDialog.dismiss();
+//                    mHandler.removeCallbacks(mUpdateUI);
+//                    try {
+//                        File sdCard = Environment.getExternalStorageDirectory();
+//                        File dir = new File (sdCard.getAbsolutePath() + "/NEWS/");
+//                        if(!dir.exists()){
+//                            dir.mkdirs();
+//                        }
+//                        webView.saveWebArchive(dir.toString() + File.separator + url);
+//
+//                    } catch (Exception e) {
+//                        // TODO: handle exception
+//                    }
+//                }
+//            });
+//            webView.getSettings().setDomStorageEnabled(true);
+//            try {
+//                File sdCard = Environment.getExternalStorageDirectory();
+//                File dir = new File (sdCard.getAbsolutePath() + "/NEWS/");
+//                if(!dir.exists()){
+//                    dir.mkdirs();
+//                }
+//                File f = new File(dir.toString() + File.separator + getArguments().getString(ARG_SECTION_NUMBER).hashCode() + ".mht");
+//                if (f.length() > 100){
+//                    String dstPath = dir.toString() + File.separator;
+//                    String indexFileName = dstPath + f.getName();
+//
+//                    try {
+//                        Collection<Attachment> attachments = MHTUnpack.unpack(new File(dir.toString() + File.separator + getArguments().getString(ARG_SECTION_NUMBER).hashCode() + ".mht"));
+//
+//                        for (Attachment attachment : attachments) {
+//                            String filename = attachment.getFileName();
+//                            String path = filename == null ? indexFileName : dstPath +  filename;
+//                            File newFile = new File(path);
+//                            if (newFile.exists()) {
+//                                newFile.delete();
+//                            }
+//                            attachment.saveFile(path);
+//                        }
+//
+//                        webView.loadUrl(indexFileName);
+//                    } catch (MessagingException e) {
+//                        throw new IOException(e);
+//                    }
+//
+//
+//                }
+//                else {
             webView.loadUrl(getArguments().getString(ARG_SECTION_NUMBER));
-            webView.setCookiesEnabled(false);
+
+//        }
+
+//            } catch (Exception e) {
+//                // TODO: handle exception
+//            }
+//            webView.loadUrl("file:///my_dir/mySavedWebPage.mht");
+
 
             return rootView;
         }

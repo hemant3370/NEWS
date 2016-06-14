@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class Utils {
 
-    public static final List<Map<String ,String>>  links = new ArrayList<>();
+    public static List<Map<String ,String>>  links = new ArrayList<>();
     public static final List<Topic> TOPICs = new ArrayList<>();
    public static boolean isLollipop = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     public static  int marvel_1 = isLollipop ? R.drawable.marvel_1_lollipop : R.drawable.marvel_1;
