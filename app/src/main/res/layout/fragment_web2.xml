@@ -1,9 +1,14 @@
- <com.hemant.myfeed.webview.AdvancedWebView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/tabwebview"
-        >
-    </com.hemant.myfeed.webview.AdvancedWebView>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+android:layout_width="match_parent"
+android:layout_height="match_parent"
 
+    >
+<WebView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/tabwebview"
+
+    >
+</WebView>
+</RelativeLayout>

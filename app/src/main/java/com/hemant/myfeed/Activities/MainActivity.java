@@ -15,31 +15,26 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-
-import com.anupcowkur.reservoir.Reservoir;
-import com.anupcowkur.reservoir.ReservoirGetCallback;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.google.gson.reflect.TypeToken;
 import com.hemant.myfeed.R;
 import com.hemant.myfeed.Util.Utils;
 import com.hemant.myfeed.fragments.BlankFragment;
@@ -47,19 +42,15 @@ import com.hemant.myfeed.fragments.MainFragment;
 import com.hemant.myfeed.model.Topic;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
-import com.mikepenz.aboutlibraries.ui.LibsFragment;
 import com.mikepenz.aboutlibraries.ui.LibsSupportFragment;
-import com.mikepenz.aboutlibraries.util.Util;
 import com.zplesac.connectionbuddy.ConnectionBuddy;
 import com.zplesac.connectionbuddy.cache.ConnectionBuddyCache;
 import com.zplesac.connectionbuddy.interfaces.ConnectivityChangeListener;
 import com.zplesac.connectionbuddy.models.ConnectivityEvent;
 import com.zplesac.connectionbuddy.models.ConnectivityState;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -159,18 +150,8 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-                Type resultType = new TypeToken<List<Map<String, String>>>() {
-                }.getType();
-                try {
-                    Utils.links = Reservoir.get("myKey", resultType);
-                    mLoadingView.pauseAnimation();
-                    mHandler.removeCallbacks(mUpdateUI);
-                    progressDialog.dismiss();
-                    showHomeFragment();
-                } catch (Exception e) {
-                    //failure
-                getFromFirebase();
-                }
+        getFromFirebase();
+
 
     }
 
@@ -182,22 +163,12 @@ public class MainActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     HashMap<String, String> dummy = new HashMap<>();
+
                     for (DataSnapshot topicSnapshot : postSnapshot.getChildren()) {
                         dummy.put(topicSnapshot.getKey(), (String) topicSnapshot.getValue());
                     }
                     Utils.links.add(dummy);
 
-                }
-                try {
-                    Reservoir.delete("myKey");
-                } catch (Exception e) {
-                    //failure
-                }
-                try {
-                    Reservoir.put("myKey", Utils.links);
-
-                } catch (Exception e) {
-                    //failure;
                 }
                 Utils.TOPICs.add(new Topic(R.drawable.world, "World ", Utils.links.get(5).get("Reuters"), R.color.purple, Utils.links.get(5)));
                 Utils.TOPICs.add(new Topic(R.drawable.sports, "Sports", Utils.links.get(4).get("Reuters"), R.color.saffron, Utils.links.get(4)));
@@ -214,6 +185,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onCancelled(FirebaseError error) {
+
             }
         });
     }

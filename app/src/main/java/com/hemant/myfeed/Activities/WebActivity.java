@@ -2,52 +2,41 @@ package com.hemant.myfeed.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Environment;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.WebChromeClient;
+
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.einmalfel.earl.Item;
 import com.hemant.myfeed.AppClass;
 import com.hemant.myfeed.R;
 import com.hemant.myfeed.Util.Utils;
-import com.hemant.myfeed.Util.Attachment;
-import com.hemant.myfeed.Util.MHTUnpack;
 import com.hemant.myfeed.views.ZoomOutPageTransformer;
-import com.hemant.myfeed.webview.AdvancedWebView;
 import com.zplesac.connectionbuddy.ConnectionBuddy;
 import com.zplesac.connectionbuddy.cache.ConnectionBuddyCache;
 import com.zplesac.connectionbuddy.interfaces.ConnectivityChangeListener;
 import com.zplesac.connectionbuddy.models.ConnectivityEvent;
 import com.zplesac.connectionbuddy.models.ConnectivityState;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.mail.MessagingException;
 
 import io.saeid.fabloading.LoadingView;
 import it.neokree.materialtabs.MaterialTab;
@@ -178,7 +167,7 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment implements AdvancedWebView.Listener {
+    public static class PlaceholderFragment extends Fragment  {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -217,10 +206,12 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_web2, container, false);
-            webView = (AdvancedWebView) rootView.findViewById(R.id.tabwebview);
+            webView = (WebView) rootView.findViewById(R.id.tabwebview);
             webView.getSettings().setBuiltInZoomControls(true);
-            webView.getSettings().setDefaultFontSize(20);
-
+            webView.getSettings().setDefaultFontSize(18);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setDomStorageEnabled(true);
+            webView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>");
             final Dialog progressDialog = new Dialog(getActivity());
             progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             progressDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -240,118 +231,34 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
                     LoadingView.FROM_BOTTOM);
             mLoadingView.startAnimation(rotation);
             mHandler.post(mUpdateUI);
-            webView.setWebChromeClient(new WebChromeClient() {
-                @Override
-                public void onProgressChanged(WebView view, int newProgress) {
-                    super.onProgressChanged(view, newProgress);
-                    if (newProgress == 90) {
-                        progressDialog.dismiss();
-                        mHandler.removeCallbacks(mUpdateUI);
-//                        try {
-//                            File sdCard = Environment.getExternalStorageDirectory();
-//                            File dir = new File(sdCard.getAbsolutePath() + "/NEWS/");
-//                            if (!dir.exists()) {
-//                                dir.mkdirs();
-//                            }
-//                            webView.saveWebArchive(dir.toString() + File.separator + getArguments().getString(ARG_SECTION_NUMBER).hashCode() + ".mht");
-//
-//                        } catch (Exception e) {
-//                            // TODO: handle exception
-//                        }
-                    }
-                }
-
-            });
-//            webView.setWebViewClient(new WebViewClient(){
-//
+//            webView.setWebChromeClient(new WebChromeClient() {
 //                @Override
-//                public void onPageFinished(WebView view, String url) {
-//                    super.onPageFinished(view, url);
-//                    progressDialog.dismiss();
-//                    mHandler.removeCallbacks(mUpdateUI);
-//                    try {
-//                        File sdCard = Environment.getExternalStorageDirectory();
-//                        File dir = new File (sdCard.getAbsolutePath() + "/NEWS/");
-//                        if(!dir.exists()){
-//                            dir.mkdirs();
-//                        }
-//                        webView.saveWebArchive(dir.toString() + File.separator + url);
+//                public void onProgressChanged(WebView view, int newProgress) {
+//                    super.onProgressChanged(view, newProgress);
+//                    if (newProgress == 90) {
+//                        progressDialog.dismiss();
+//                        mHandler.removeCallbacks(mUpdateUI);
 //
-//                    } catch (Exception e) {
-//                        // TODO: handle exception
 //                    }
 //                }
+//
 //            });
-//            webView.getSettings().setDomStorageEnabled(true);
-//            try {
-//                File sdCard = Environment.getExternalStorageDirectory();
-//                File dir = new File (sdCard.getAbsolutePath() + "/NEWS/");
-//                if(!dir.exists()){
-//                    dir.mkdirs();
-//                }
-//                File f = new File(dir.toString() + File.separator + getArguments().getString(ARG_SECTION_NUMBER).hashCode() + ".mht");
-//                if (f.length() > 100){
-//                    String dstPath = dir.toString() + File.separator;
-//                    String indexFileName = dstPath + f.getName();
-//
-//                    try {
-//                        Collection<Attachment> attachments = MHTUnpack.unpack(new File(dir.toString() + File.separator + getArguments().getString(ARG_SECTION_NUMBER).hashCode() + ".mht"));
-//
-//                        for (Attachment attachment : attachments) {
-//                            String filename = attachment.getFileName();
-//                            String path = filename == null ? indexFileName : dstPath +  filename;
-//                            File newFile = new File(path);
-//                            if (newFile.exists()) {
-//                                newFile.delete();
-//                            }
-//                            attachment.saveFile(path);
-//                        }
-//
-//                        webView.loadUrl(indexFileName);
-//                    } catch (MessagingException e) {
-//                        throw new IOException(e);
-//                    }
-//
-//
-//                }
-//                else {
+            webView.setWebViewClient(new WebViewClient(){
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    progressDialog.dismiss();
+                    mHandler.removeCallbacks(mUpdateUI);
+                }
+            });
             webView.loadUrl(getArguments().getString(ARG_SECTION_NUMBER));
 
-//        }
-
-//            } catch (Exception e) {
-//                // TODO: handle exception
-//            }
-//            webView.loadUrl("file:///my_dir/mySavedWebPage.mht");
 
 
             return rootView;
         }
 
-        @Override
-        public void onPageStarted(String url, Bitmap favicon) {
 
-        }
-
-        @Override
-        public void onPageFinished(String url) {
-
-        }
-
-        @Override
-        public void onPageError(int errorCode, String description, String failingUrl) {
-
-        }
-
-        @Override
-        public void onDownloadRequested(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-
-        }
-
-        @Override
-        public void onExternalPageRequest(String url) {
-
-        }
     }
 
     /**
@@ -377,18 +284,7 @@ public class WebActivity extends AppCompatActivity implements MaterialTabListene
             return RssItems.size();
         }
 
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            switch (position) {
-//                case 0:
-//                    return RssItems.get(position).getTitle();
-//                case 1:
-//                    return RssItems.get(position).getTitle();
-//                case 2:
-//                    return RssItems.get(position).getTitle();
-//            }
-//            return null;
-//        }
+
     }
 
     @Override

@@ -3,19 +3,11 @@ package com.hemant.myfeed;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
-import com.anupcowkur.reservoir.Reservoir;
 import com.einmalfel.earl.Item;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.hemant.myfeed.Util.Utils;
-import com.squareup.picasso.Picasso;
 import com.zplesac.connectionbuddy.ConnectionBuddy;
 import com.zplesac.connectionbuddy.ConnectionBuddyConfiguration;
 
@@ -39,11 +31,6 @@ public class AppClass extends Application{
         Firebase.setAndroidContext(this);
         ConnectionBuddyConfiguration networkInspectorConfiguration = new ConnectionBuddyConfiguration.Builder(this).build();
         ConnectionBuddy.getInstance().init(networkInspectorConfiguration);
-        try {
-            Reservoir.init(this, 1024); //in bytes
-        } catch (Exception e) {
-            //failure
-        }
     }
     @Override
     public void onTerminate() {

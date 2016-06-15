@@ -32,12 +32,6 @@
             android:screenOrientation="portrait"
             android:label="@string/title_activity_web"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".Activities.NewsTabbedActivity"
-            android:label="@string/title_activity_news_tabbed"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
     </application>
 
 </manifest>
