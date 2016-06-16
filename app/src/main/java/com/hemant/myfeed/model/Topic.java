@@ -49,25 +49,12 @@ public class Topic {
 
         }
     }
-    public Topic(){
 
-         }
 
     public int getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(int avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
 
     public int getBackground() {
         return background;
@@ -81,9 +68,7 @@ public class Topic {
         return mainLink;
     }
 
-    public void setMainLink(String mainLink) {
-        this.mainLink = mainLink;
-    }
+
 
 
 

@@ -156,6 +156,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getFromFirebase(){
+        Utils.links.clear();
+        Utils.TOPICs.clear();
         Firebase myFirebaseRef = new Firebase("https://knowfeed.firebaseio.com/");
 
         myFirebaseRef.child("links").addValueEventListener(new ValueEventListener() {
