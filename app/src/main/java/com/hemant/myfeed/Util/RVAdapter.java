@@ -113,7 +113,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
             if (m.find()) {
                 try {
-                    Picasso.with(mContext).load(String.valueOf(new URL(m.group(1)))).into(personViewHolder.Photo);
+                    Picasso.with(mContext).load(String.valueOf(new URL(m.group(1)))).resize(80,80).into(personViewHolder.Photo);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -130,18 +130,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
             }
         }
 
-        setAnimation(personViewHolder.cv, i);
+//        setAnimation(personViewHolder.cv, i);
     }
-    private void setAnimation(View viewToAnimate, int position)
-    {
-        // If the bound view wasn't previously displayed on screen, it's animated
-        if (position > lastPosition)
-        {
-            Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        }
-    }
+//    private void setAnimation(View viewToAnimate, int position)
+//    {
+//        // If the bound view wasn't previously displayed on screen, it's animated
+//        if (position > lastPosition)
+//        {
+//            Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left);
+//            viewToAnimate.startAnimation(animation);
+//            lastPosition = position;
+//        }
+//    }
     @Override
     public int getItemCount() {
         return RssItems.size();

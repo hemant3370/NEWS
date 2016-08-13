@@ -26,6 +26,7 @@ import android.view.animation.AnimationUtils;
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
+import com.einmalfel.earl.RSSItem;
 import com.hemant.myfeed.AppClass;
 import com.hemant.myfeed.Util.CustomItemClickListener;
 import com.hemant.myfeed.R;
@@ -207,7 +208,7 @@ public class BlankFragment extends Fragment {
             try {
                 InputStream inputStream = new URL(params[0]).openConnection().getInputStream();
                 Feed feed = EarlParser.parseOrThrow(inputStream, 0);
-                int i = 0;
+
                 for (Item item : feed.getItems()) {
                         RssItems.add(item);
                 }
