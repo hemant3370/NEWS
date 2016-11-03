@@ -1,34 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+
+    >
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="2"
+        android:orientation="vertical"
         android:background="@color/sienna"
         xmlns:android="http://schemas.android.com/apk/res/android">
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18sp"
+            android:layout_weight="0.1"
+            android:id="@+id/title1"
+            android:textColor="@color/about_libraries_text_openSource_dark"
+            />
         <ImageView
             android:id="@+id/first"
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_launcher"
             android:contentDescription="left image"
+            android:layout_weight="0.9"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter" />
 
-        <LinearLayout
-            android:layout_width="1dp"
-            android:layout_weight="0"
-            android:background="#000000"
-            android:layout_height="fill_parent"/>
 
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="1dp"
+        android:layout_weight="0"
+        android:background="#000000"
+
+        android:layout_height="fill_parent"/>
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/sienna"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:gravity="top"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.1"
+            android:id="@+id/title2"
+            android:textColor="@color/about_libraries_text_openSource_dark"
+            android:textSize="18sp"
+            />
         <ImageView
             android:id="@+id/second"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.9"
             android:contentDescription="right image"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter" />

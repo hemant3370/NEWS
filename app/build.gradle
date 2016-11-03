@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
@@ -10,10 +12,10 @@ android {
     }
     defaultConfig {
         applicationId "com.hemant.myfeed"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.3"
+        versionCode 6
+        versionName "1.5"
     }
     buildTypes {
         release {
@@ -33,11 +35,12 @@ dependencies {
     compile 'com.einmalfel:earl:1.0.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'io.saeid:fab-loading:0.6.0'
+    compile 'me.kaelaela:verticalviewpager:1.0.0@aar'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.zplesac:android_connectionbuddy:v1.0.7@aar'
-    compile 'it.neokree:MaterialTabs:0.11'
+
     compile 'com.firebase:firebase-client-android:2.5.0'
+    compile 'com.android.support:customtabs:23.3.0'
     compile('com.mikepenz:aboutlibraries:5.5.2@aar') {
         transitive = true
     }

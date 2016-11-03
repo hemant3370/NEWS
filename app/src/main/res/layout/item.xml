@@ -4,8 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="180dp"
-    app:cardUseCompatPadding="true"
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:selectableItemBackground"
+    app:cardCornerRadius="4dp"
     android:id="@+id/cv"
     >
 
@@ -14,30 +17,28 @@
         android:layout_height="match_parent"
         android:padding="10dp"
         >
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/person_photo"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="16dp"
-            />
-
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/person_name"
-            android:layout_toRightOf="@+id/person_photo"
             android:layout_alignParentTop="true"
             android:textSize="24sp"
             />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:id="@+id/person_photo"
+            android:layout_below="@+id/person_name"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            />
         <WebView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/person_age"
-            android:layout_below="@+id/person_name"
+            android:layout_below="@+id/person_photo"
             >
 </WebView>
     </RelativeLayout>

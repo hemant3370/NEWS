@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.hemant.myfeed.Activities.MainActivity;
 import com.hemant.myfeed.AppClass;
 import com.hemant.myfeed.R;
 import com.hemant.myfeed.Util.Utils;
+import com.hemant.myfeed.model.StringObject;
 import com.hemant.myfeed.model.Topic;
 import com.squareup.picasso.Picasso;
 import com.hemant.myfeed.yalantis.flipviewpager.adapter.BaseFlipAdapter;
@@ -27,6 +30,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +48,7 @@ public class MainFragment extends Fragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Realm realm;
      MainActivity myParentActivity;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -88,22 +96,31 @@ public class MainFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        Realm.init(getContext());
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name(Realm.DEFAULT_REALM_NAME)
+                .schemaVersion(0)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        realm = Realm.getInstance(realmConfiguration);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this,rootView);
         friends.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    myParentActivity.setUrl(Utils.TOPICs.get(position).getMainLink());
+                    myParentActivity.setUrl(realm.where(Topic.class).findAll().get(position).getMainLink());
 
             }
         });
-        FlipSettings settings = new FlipSettings.Builder().defaultPage(1).build();
-        friends.setAdapter(new FriendsAdapter(getActivity(), Utils.TOPICs, settings));
+
+        reloadList();
         return rootView;
     }
-
+     public void reloadList(){
+         FlipSettings settings = new FlipSettings.Builder().defaultPage(1).build();
+         RealmResults<Topic> topics = realm.where(Topic.class).notEqualTo("avatar",0).findAll();
+         friends.setAdapter(new FriendsAdapter(getActivity(),topics , settings));
+     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -141,7 +158,7 @@ public class MainFragment extends Fragment{
         }
 
         @Override
-        public View getPage(final int position, View convertView, ViewGroup parent, final Topic topic1, Topic topic2) {
+        public View getPage(final int position, View convertView, ViewGroup parent, Topic topic1, Topic topic2) {
             final FriendsHolder holder;
 
             if (convertView == null) {
@@ -149,7 +166,8 @@ public class MainFragment extends Fragment{
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.friends_merge_page, parent, false);
                 holder.leftAvatar = ButterKnife.findById(convertView,R.id.first);
                 holder.rightAvatar = ButterKnife.findById(convertView,R.id.second);
-
+                holder.title1 = ButterKnife.findById(convertView,R.id.title1);
+                holder.title2 = ButterKnife.findById(convertView,R.id.title2);
                 holder.infoPage = getActivity().getLayoutInflater().inflate(R.layout.friends_info, parent, false);
                 for (int id : IDS_INTEREST) {
                     holder.interests.add((Button) holder.infoPage.findViewById(id));
@@ -159,19 +177,23 @@ public class MainFragment extends Fragment{
             } else {
                 holder = (FriendsHolder) convertView.getTag();
             }
+            if (topic1 != null && topic2 != null) {
 
+                switch (position) {
+                    // Merged page with 2 TOPICs
+                    case 1:
 
-            switch (position) {
-                // Merged page with 2 TOPICs
-                case 1:
-                    Picasso.with(AppClass.getAppContext()).load(topic1.getAvatar()).into(holder.leftAvatar);
-                    if (topic2 != null)
-                    Picasso.with(AppClass.getAppContext()).load(topic2.getAvatar()).into(holder.rightAvatar);
-                    break;
-                default:
-                    fillHolder(holder, position == 0 ? topic1 : topic2);
-                    holder.infoPage.setTag(holder);
-                    return holder.infoPage;
+                        Picasso.with(AppClass.getAppContext()).load(topic1.getAvatar()).into(holder.leftAvatar);
+                        holder.title1.setText(topic1.getTopic());
+                        if (topic2 != null)
+                            Picasso.with(AppClass.getAppContext()).load(topic2.getAvatar()).into(holder.rightAvatar);
+                        holder.title2.setText(topic2.getTopic());
+                        break;
+                    default:
+                        fillHolder(holder, position == 0 ? topic1 : topic2);
+                        holder.infoPage.setTag(holder);
+                        return holder.infoPage;
+                }
             }
             return convertView;
         }
@@ -185,7 +207,7 @@ public class MainFragment extends Fragment{
             if (topic == null)
                 return;
             Iterator<Button> iViews = holder.interests.iterator();
-            final Iterator<String> iInterests = topic.getInterests().iterator();
+            final Iterator<StringObject> iInterests = topic.getInterests().iterator();
             while (iViews.hasNext()) {
                 final Button button = iViews.next();
                 button.setClickable(true);
@@ -195,36 +217,37 @@ public class MainFragment extends Fragment{
                         switch (v.getId())
                         {
                             case  R.id.interest_1:
-                            myParentActivity.setUrl(topic.getLinks().get(0));
+                            myParentActivity.setUrl(topic.getLinks().get(0).string);
                             break;
                             case  R.id.interest_2:
-                                myParentActivity.setUrl(topic.getLinks().get(1));
+                                myParentActivity.setUrl(topic.getLinks().get(1).string);
                                 break;
                             case  R.id.interest_3:
-                                myParentActivity.setUrl(topic.getLinks().get(2));
+                                myParentActivity.setUrl(topic.getLinks().get(2).string);
                                 break;
                             case  R.id.interest_4:
-                                myParentActivity.setUrl(topic.getLinks().get(3));
+                                myParentActivity.setUrl(topic.getLinks().get(3).string);
                                 break;
                             case  R.id.interest_5:
-                                myParentActivity.setUrl(topic.getLinks().get(4));
+                                myParentActivity.setUrl(topic.getLinks().get(4).string);
                                 break;
                             case  R.id.interest_6:
-                                myParentActivity.setUrl(topic.getLinks().get(5));
+                                myParentActivity.setUrl(topic.getLinks().get(5).string);
                                 break;
                         }
 
                     }
                 });
                 if (iInterests.hasNext()) {
-                    button.setText(iInterests.next());
+                    button.setText(iInterests.next().string);
                 }
-                holder.infoPage.setBackgroundColor(getResources().getColor(topic.getBackground()));
+//                holder.infoPage.setBackgroundColor(ContextCompat.getColor(getContext(),topic.getBackground()));
             }
         }
         class FriendsHolder {
             ImageView leftAvatar;
             ImageView rightAvatar;
+            TextView title1,title2;
             View infoPage;
             List<Button> interests = new ArrayList<>();
         }

@@ -13,6 +13,8 @@ import com.zplesac.connectionbuddy.ConnectionBuddyConfiguration;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+
 /**
  * Created by anuraggupta on 31/01/16.
  */
@@ -21,9 +23,6 @@ public class AppClass extends Application{
     private static AppClass sInstance;
     DisplayMetrics metrics;
 
-
-
-    public ArrayList<Item> rssitemforwebview ;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -31,6 +30,7 @@ public class AppClass extends Application{
         Firebase.setAndroidContext(this);
         ConnectionBuddyConfiguration networkInspectorConfiguration = new ConnectionBuddyConfiguration.Builder(this).build();
         ConnectionBuddy.getInstance().init(networkInspectorConfiguration);
+        Realm.init(this);
     }
     @Override
     public void onTerminate() {
@@ -70,12 +70,6 @@ public class AppClass extends Application{
         metrics = getResources().getDisplayMetrics();
         return metrics;
     }
-    public  ArrayList<Item>  getRssitemforwebview() {
-        return rssitemforwebview;
-    }
 
-    public void setRssitemforwebview( ArrayList<Item>  rssitemforwebview) {
-        this.rssitemforwebview = rssitemforwebview;
-    }
 
 }

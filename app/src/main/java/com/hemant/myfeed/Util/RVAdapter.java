@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +37,7 @@ import butterknife.ButterKnife;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
     Context mContext;
-    private int lastPosition = -1;
+
     CustomItemClickListener listener;
     public static class PersonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @Bind(R.id.cv)
@@ -95,40 +96,37 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
     @Override
     public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
         personViewHolder.titleLabel.setText(RssItems.get(i).getTitle());
-        personViewHolder.webview.getSettings().setJavaScriptEnabled(true);
-        personViewHolder.webview.setWebChromeClient(new WebChromeClient(){
-        });
-        personViewHolder.webview.getSettings().setLoadsImagesAutomatically(false);
+        personViewHolder.webview.setWebViewClient(new WebViewClient());
         personViewHolder.webview.loadDataWithBaseURL(null, "<html>" + RssItems.get(i).getDescription() + "</html>", "text/html", "utf-8", null);
 
         if(RssItems.get(i).getImageLink() != null) {
             Picasso.with(mContext).load((RssItems.get(i).getImageLink())).into(personViewHolder.Photo);
         }
-        else {
-            String html = RssItems.get(i).getDescription();
-            String imgRegex = "<[iI][mM][gG][^>]+[sS][rR][cC]\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>";
-
-            Pattern p = Pattern.compile(imgRegex);
-            Matcher m = p.matcher(html);
-
-            if (m.find()) {
-                try {
-                    Picasso.with(mContext).load(String.valueOf(new URL(m.group(1)))).resize(80,80).into(personViewHolder.Photo);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-
-                Uri data = Uri.parse(RssItems.get(i).getLink());
-                try {
-                    Picasso.with(mContext).load(new String(String.valueOf(new URL(data.getScheme(), data.getHost(), "/favicon.ico")))).into(personViewHolder.Photo);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
+//        else {
+//            String html = RssItems.get(i).getDescription();
+//            String imgRegex = "<[iI][mM][gG][^>]+[sS][rR][cC]\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>";
+//
+//            Pattern p = Pattern.compile(imgRegex);
+//            Matcher m = p.matcher(html);
+//
+//            if (m.find()) {
+//                try {
+//                    Picasso.with(mContext).load(String.valueOf(new URL(m.group(1)))).resize(80,80).into(personViewHolder.Photo);
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            else {
+//
+//                Uri data = Uri.parse(RssItems.get(i).getLink());
+//                try {
+//                    Picasso.with(mContext).load(new String(String.valueOf(new URL(data.getScheme(), data.getHost(), "/favicon.ico")))).into(personViewHolder.Photo);
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }
 
 //        setAnimation(personViewHolder.cv, i);
     }

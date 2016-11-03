@@ -26,12 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.WebActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_web"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

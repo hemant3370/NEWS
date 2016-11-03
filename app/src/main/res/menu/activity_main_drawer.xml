@@ -8,10 +8,6 @@
             android:icon="@drawable/ic_home"
             android:title="Home" />
 
-        <item
-            android:id="@+id/nav_gallary"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Random" />
 
 
             <item

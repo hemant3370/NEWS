@@ -1,39 +1,28 @@
 package com.hemant.myfeed.fragments;
 
-import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
-import com.einmalfel.earl.RSSItem;
-import com.hemant.myfeed.AppClass;
-import com.hemant.myfeed.Util.CustomItemClickListener;
 import com.hemant.myfeed.R;
+import com.hemant.myfeed.Util.CustomItemClickListener;
 import com.hemant.myfeed.Util.RVAdapter;
-import com.hemant.myfeed.Util.Utils;
-
-import com.hemant.myfeed.Activities.WebActivity;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -41,7 +30,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.saeid.fabloading.LoadingView;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,17 +44,10 @@ public class BlankFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    LoadingView mLoadingView;
 
-    Dialog progressDialog;
 
-    private final Handler mHandler = new Handler();
-    private final Runnable mUpdateUI = new Runnable() {
-        public void run() {
-            mLoadingView.performClick();
-            mHandler.postDelayed(mUpdateUI, 2002);
-        }
-    };
+    ProgressDialog progressDialog;
+
     @Bind(R.id.rv)
     RecyclerView rv;
     private ArrayList<Item> RssItems;
@@ -109,34 +91,13 @@ public class BlankFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
         ButterKnife.bind(this, rootView);
-         progressDialog = new Dialog(getActivity());
-        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressDialog.requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        progressDialog.getWindow().requestFeature(Window.FEATURE_PROGRESS);
-        progressDialog.getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        progressDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+         progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle("Fetching");
+        progressDialog.setIndeterminate(true);
         progressDialog.show();
         Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.flipy);
         rotation.setFillAfter(true);
-        progressDialog.setContentView(R.layout.loadingview);
-        mLoadingView = ButterKnife.findById(progressDialog, R.id.loading_view);
-        mLoadingView.addAnimation(Color.parseColor("#FFD200"), Utils.marvel_1,
-                LoadingView.FROM_LEFT);
-        mLoadingView.addAnimation(Color.parseColor("#2F5DA9"), Utils.marvel_2,
-                LoadingView.FROM_TOP);
-        mLoadingView.addAnimation(Color.parseColor("#FF4218"),Utils. marvel_3,
-                LoadingView.FROM_RIGHT);
-        mLoadingView.addAnimation(Color.parseColor("#C7E7FB"),Utils. marvel_4,
-                LoadingView.FROM_BOTTOM);
-        mLoadingView.startAnimation(rotation);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mLoadingView.setElevation(12);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mLoadingView.setTranslationZ(8);
-        }
-        mHandler.post(mUpdateUI);
+       progressDialog.show();
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(false);
@@ -150,10 +111,11 @@ public class BlankFragment extends Fragment {
         RVAdapter adapter = new RVAdapter(getActivity(), RssItems, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Intent webPager = new Intent(getActivity(), WebActivity.class);
-                AppClass.getsInstance().setRssitemforwebview(RssItems);
-                webPager.putExtra("position",position);
-                startActivity(webPager);
+                String url = RssItems.get(position).getLink();
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(getActivity(), Uri.parse(url));
             }
         });
         adapter.notifyDataSetChanged();
@@ -161,7 +123,7 @@ public class BlankFragment extends Fragment {
         rv.setAdapter(adapter);
         if(progressDialog.isShowing())
         progressDialog.dismiss();
-        rv.setItemViewCacheSize(10);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
