@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity
 
         Firebase myFirebaseRef = new Firebase("https://knowfeed.firebaseio.com/");
 
-        myFirebaseRef.child("links").addValueEventListener(new ValueEventListener() {
+        myFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 

@@ -14,10 +14,11 @@ android {
         applicationId "com.hemant.myfeed"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 6
-        versionName "1.5"
+        versionCode 8
+        versionName "1.7"
     }
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -35,7 +36,6 @@ dependencies {
     compile 'com.einmalfel:earl:1.0.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'me.kaelaela:verticalviewpager:1.0.0@aar'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.zplesac:android_connectionbuddy:v1.0.7@aar'
 

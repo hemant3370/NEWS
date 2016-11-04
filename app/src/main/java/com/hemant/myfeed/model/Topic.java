@@ -49,11 +49,11 @@ public class Topic extends RealmObject {
                  Map<String, String> linkTopicPair) {
 //        Topic topicData = realm.createObject(Topic.class,topic);
         switch (topic){
-            case "SportsLinks" :
+            case "Sports" :
                 this.avatar = R.drawable.sports;
             case "Health" :
                 this.avatar = R.drawable.healthormedical;
-            case "WorldNewsLinks" :
+            case "World" :
                 this.avatar = R.drawable.world;
             case "Politics" :
                 this.avatar = R.drawable.politics;
@@ -84,11 +84,11 @@ public class Topic extends RealmObject {
 
     public int getAvatar() {
         switch (this.topic){
-            case "SportsLinks" :
+            case "Sports" :
                 return R.drawable.sports;
             case "Health" :
                 return R.drawable.healthormedical;
-            case "WorldNewsLinks" :
+            case "World" :
                 return R.drawable.world;
             case "Politics" :
                 return R.drawable.politics;

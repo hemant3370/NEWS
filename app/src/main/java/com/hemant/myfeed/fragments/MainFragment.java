@@ -183,10 +183,10 @@ public class MainFragment extends Fragment{
                     // Merged page with 2 TOPICs
                     case 1:
 
-                        Picasso.with(AppClass.getAppContext()).load(topic1.getAvatar()).into(holder.leftAvatar);
+                        Picasso.with(getActivity()).load(topic1.getAvatar()).into(holder.leftAvatar);
                         holder.title1.setText(topic1.getTopic());
                         if (topic2 != null)
-                            Picasso.with(AppClass.getAppContext()).load(topic2.getAvatar()).into(holder.rightAvatar);
+                            Picasso.with(getActivity()).load(topic2.getAvatar()).into(holder.rightAvatar);
                         holder.title2.setText(topic2.getTopic());
                         break;
                     default:
