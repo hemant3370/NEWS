@@ -74,10 +74,6 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-     @OnClick(R.id.fab)
-     public void fabClick(){
-        showHomeFragment();
-    }
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
     @Override

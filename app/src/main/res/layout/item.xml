@@ -37,6 +37,7 @@
         <WebView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:id="@+id/person_age"
             android:layout_below="@+id/person_photo"
             >

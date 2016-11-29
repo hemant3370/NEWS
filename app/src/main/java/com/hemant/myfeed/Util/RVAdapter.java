@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import com.einmalfel.earl.Item;
 
+import com.hemant.myfeed.AppClass;
 import com.hemant.myfeed.R;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +36,7 @@ import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
@@ -48,6 +52,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         WebView webview;
         @Bind(R.id.person_photo)
         ImageView Photo;
+
 
         PersonViewHolder(View itemView) {
             super(itemView);
@@ -84,19 +89,38 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
     public PersonViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
         final PersonViewHolder pvh = new PersonViewHolder(v);
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClick(v, pvh.getAdapterPosition());
-            }
-        });
+
         return pvh;
     }
 
     @Override
-    public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
+    public void onBindViewHolder(final PersonViewHolder personViewHolder, final int i) {
         personViewHolder.titleLabel.setText(RssItems.get(i).getTitle());
-        personViewHolder.webview.setWebViewClient(new WebViewClient());
+        personViewHolder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(personViewHolder.cv,i);
+            }
+        });
+        personViewHolder.webview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(personViewHolder.cv,i);
+            }
+        });
+
+        personViewHolder.webview.setWebViewClient(new WebViewClient()
+        {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                listener.onItemClick(personViewHolder.cv,i);
+
+                return true;
+            }
+        });
+
+
         personViewHolder.webview.loadDataWithBaseURL(null, "<html>" + RssItems.get(i).getDescription() + "</html>", "text/html", "utf-8", null);
 
         if(RssItems.get(i).getImageLink() != null) {
