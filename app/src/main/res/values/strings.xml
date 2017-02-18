@@ -11,4 +11,6 @@
     <string name="title_activity_web">Full Article</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_news_tabbed">NewsTabbedActivity</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

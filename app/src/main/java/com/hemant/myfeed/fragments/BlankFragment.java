@@ -9,7 +9,6 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
@@ -45,11 +45,8 @@ public class BlankFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
-
-    ProgressDialog progressDialog;
-
     @Bind(R.id.rv)
-    RecyclerView rv;
+    ShimmerRecyclerView rv;
     private ArrayList<Item> RssItems;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -91,38 +88,32 @@ public class BlankFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
         ButterKnife.bind(this, rootView);
-         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle("Fetching");
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
-        Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.flipy);
-        rotation.setFillAfter(true);
-       progressDialog.show();
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(false);
+        rv.showShimmerAdapter();
         RssItems = new ArrayList<>();
         new GetRssFeed().execute(mParam1);
 //        new GetRssFeed().execute("http://feeds.reuters.com/reuters/INoddlyEnoughNews");
         return rootView;
     }
 
-    private void initializeAdapter(){
+    private void initializeAdapter() {
         RVAdapter adapter = new RVAdapter(getActivity(), RssItems, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 String url = RssItems.get(position).getLink();
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setToolbarColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
+                builder.setToolbarColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
                 CustomTabsIntent customTabsIntent = builder.build();
                 customTabsIntent.launchUrl(getActivity(), Uri.parse(url));
             }
         });
         adapter.notifyDataSetChanged();
-        if (adapter != null && rv != null)
-        rv.setAdapter(adapter);
-        if(progressDialog.isShowing())
-        progressDialog.dismiss();
+        if (rv != null) {
+            rv.hideShimmerAdapter();
+            rv.setAdapter(adapter);
+    }
 
     }
 

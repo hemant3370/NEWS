@@ -2,12 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.hemant.myfeed.fragments.BlankFragment">
-    <android.support.v7.widget.RecyclerView
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rv"
+        app:demo_child_count="10"
+        app:demo_grid_child_count="1"
+        app:demo_layout="@layout/layout_demo"
+        app:demo_layout_manager_type="grid"
         />
 
 </FrameLayout>
