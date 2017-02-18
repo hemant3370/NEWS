@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "74069040601",
+    "firebase_url": "https://knowfeed.firebaseio.com",
+    "project_id": "project-2279518085934155414",
+    "storage_bucket": "project-2279518085934155414.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74069040601:android:eb7517fa59150825",
+        "android_client_info": {
+          "package_name": "com.hemant.myfeed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74069040601-5bqt6d6u8narcc5308rqltb1v5n56dp6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hemant.myfeed",
+            "certificate_hash": "3D000EA5D8ACF018B9D267FB454D4A54E1C2D8FD"
+          }
+        },
+        {
+          "client_id": "74069040601-0ui1kmna2j3813h2k7mvs8sa7sdtvlv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuYH_ujebCcpzBb-G-hxyZez3uqbjO6QI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74069040601-0ui1kmna2j3813h2k7mvs8sa7sdtvlv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
