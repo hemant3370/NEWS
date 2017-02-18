@@ -1,11 +1,15 @@
+@RealmClass
 public class StringObject extends RealmObject {
-  private String val;
+    public String string;
 
-  public String getValue() {
-    return val;
-  }
+    public StringObject() {
 
-  public void setValue(String value) {
-    this.val = value;
-  }
+    }
+
+    public static StringObject init(Realm realm, String str) {
+        StringObject stringObject = realm.createObject(StringObject.class);
+        stringObject.string = str;
+        return stringObject;
+
+    }
 }
