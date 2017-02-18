@@ -1,13 +1,3 @@
-package com.hemant.myfeed.model;
-
-import io.realm.Realm;
-import io.realm.RealmObject;
-import io.realm.annotations.RealmClass;
-
-/**
- * Created by HemantSingh on 27/10/16.
- */
-
 @RealmClass
 public class StringObject extends RealmObject {
     public String string;
