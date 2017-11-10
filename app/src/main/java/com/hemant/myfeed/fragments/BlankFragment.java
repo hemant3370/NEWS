@@ -1,10 +1,11 @@
 package com.hemant.myfeed.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -13,20 +14,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.einmalfel.earl.EarlParser;
+import com.einmalfel.earl.Enclosure;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
 import com.hemant.myfeed.R;
 import com.hemant.myfeed.Util.CustomItemClickListener;
 import com.hemant.myfeed.Util.RVAdapter;
+import com.prof.rssparser.Article;
+import com.prof.rssparser.Parser;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -97,8 +102,73 @@ public class BlankFragment extends Fragment {
 //        new GetRssFeed().execute("http://feeds.reuters.com/reuters/INoddlyEnoughNews");
         return rootView;
     }
+    private void secondaryParser(){
+        Parser parser = new Parser();
+        parser.execute(mParam1);
+        parser.onFinish(new Parser.OnTaskCompleted() {
 
+            @Override
+            public void onTaskCompleted(ArrayList<Article> list) {
+                //what to do when the parsing is done
+                //the Array List contains all article's data. For example you can use it for your adapter.
+                for (final Article article : list){
+                    Item item = new Item() {
+                        @Nullable
+                        @Override
+                        public String getLink() {
+                            return article.getLink();
+                        }
+
+                        @Nullable
+                        @Override
+                        public Date getPublicationDate() {
+                            return article.getPubDate();
+                        }
+
+                        @Nullable
+                        @Override
+                        public String getTitle() {
+                            return article.getTitle();
+                        }
+
+                        @Nullable
+                        @Override
+                        public String getDescription() {
+                            return article.getDescription();
+                        }
+
+                        @Nullable
+                        @Override
+                        public String getImageLink() {
+                            return article.getImage();
+                        }
+
+                        @Nullable
+                        @Override
+                        public String getAuthor() {
+                            return article.getAuthor();
+                        }
+
+                        @NonNull
+                        @Override
+                        public List<? extends Enclosure> getEnclosures() {
+                            return null;
+                        }
+                    };
+                    RssItems.add(item);
+                }
+                initializeAdapter();
+            }
+
+            @Override
+            public void onError() {
+                //what to do in case of error
+                Toast.makeText(getContext(),"Cannot get NEWS Feed. Try any other channel.",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     private void initializeAdapter() {
+
         RVAdapter adapter = new RVAdapter(getActivity(), RssItems, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -162,9 +232,7 @@ public class BlankFragment extends Fragment {
                 InputStream inputStream = new URL(params[0]).openConnection().getInputStream();
                 Feed feed = EarlParser.parseOrThrow(inputStream, 0);
 
-                for (Item item : feed.getItems()) {
-                        RssItems.add(item);
-                }
+                RssItems.addAll(feed.getItems());
 
             } catch (Exception e) {
                 Log.v("Error Parsing Data", e + "");
@@ -175,8 +243,13 @@ public class BlankFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-            initializeAdapter();
+            if (RssItems.isEmpty()){
+                Toast.makeText(getContext(), "Try other approach.", Toast.LENGTH_SHORT).show();
+                secondaryParser();
+            }
+            else {
+                initializeAdapter();
+            }
         }
     }
 

@@ -1,3 +1,8 @@
+package com.hemant.myfeed.model;
+import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.annotations.RealmClass;
+
 @RealmClass
 public class StringObject extends RealmObject {
     public String string;

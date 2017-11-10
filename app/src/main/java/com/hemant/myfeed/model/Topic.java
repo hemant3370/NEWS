@@ -1,18 +1,8 @@
 package com.hemant.myfeed.model;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.hemant.myfeed.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -61,6 +51,8 @@ public class Topic extends RealmObject {
                 this.avatar = R.drawable.science;
             case "Entertainment" :
                 this.avatar = R.drawable.entertainment;
+            default:
+                this.avatar = R.mipmap.ic_launcher;
         }
         this.topic = topic;
         this.background = R.color.purple;
@@ -72,7 +64,7 @@ public class Topic extends RealmObject {
         }
 
         }
-        this.mainLink = this.links.get(new Random().nextInt(5)).string;
+        this.mainLink = this.links.get(0).string;
     }
     public String getTopic() {
         return topic;
@@ -97,7 +89,7 @@ public class Topic extends RealmObject {
             case "Entertainment" :
                 return R.drawable.entertainment;
             default:
-                return R.drawable.ic_menu_gallery;
+                return R.mipmap.ic_launcher;
         }
     }
 

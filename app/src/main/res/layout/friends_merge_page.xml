@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
@@ -9,7 +10,7 @@
     <LinearLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:weightSum="2"
         android:orientation="vertical"
         android:background="@color/sienna"
@@ -17,7 +18,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
             android:layout_gravity="center_horizontal"
             android:textSize="18sp"
             android:layout_weight="0.1"
@@ -27,11 +27,10 @@
         <ImageView
             android:id="@+id/first"
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:src="@mipmap/ic_launcher"
+            android:layout_width="match_parent"
             android:contentDescription="left image"
             android:layout_weight="0.9"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scaleType="fitCenter" />
 
 
@@ -46,14 +45,13 @@
     <LinearLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/sienna"
         xmlns:android="http://schemas.android.com/apk/res/android">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
             android:gravity="top"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.1"
@@ -63,11 +61,10 @@
             />
         <ImageView
             android:id="@+id/second"
-            android:src="@mipmap/ic_launcher"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_weight="0.9"
             android:contentDescription="right image"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scaleType="fitCenter" />
 
     </LinearLayout>

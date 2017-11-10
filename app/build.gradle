@@ -14,8 +14,8 @@ android {
         applicationId "com.hemant.myfeed"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 9
-        versionName "1.8"
+        versionCode 10
+        versionName "1.9"
     }
     buildTypes {
 
@@ -38,7 +38,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.zplesac:android_connectionbuddy:v1.0.7@aar'
-
+    compile 'com.prof.rssparser:rssparser:1.1'
     compile 'com.firebase:firebase-client-android:2.5.0'
     compile 'com.android.support:customtabs:25.1.0'
     compile('com.mikepenz:aboutlibraries:5.5.2@aar') {

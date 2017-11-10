@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hemant.myfeed.Activities.MainActivity;
-import com.hemant.myfeed.AppClass;
 import com.hemant.myfeed.R;
-import com.hemant.myfeed.Util.Utils;
 import com.hemant.myfeed.model.StringObject;
 import com.hemant.myfeed.model.Topic;
-import com.squareup.picasso.Picasso;
 import com.hemant.myfeed.yalantis.flipviewpager.adapter.BaseFlipAdapter;
 import com.hemant.myfeed.yalantis.flipviewpager.utils.FlipSettings;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +29,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -149,12 +145,13 @@ public class MainFragment extends Fragment{
     }
     class FriendsAdapter extends BaseFlipAdapter<Topic> {
 
-        private final int PAGES = 3;
+        int PAGES = 3;
         private int[] IDS_INTEREST = {R.id.interest_1, R.id.interest_2, R.id.interest_3,R.id.interest_4,R.id.interest_5,R.id.interest_6};
         @Bind({R.id.interest_1, R.id.interest_2, R.id.interest_3,R.id.interest_4,R.id.interest_5,R.id.interest_6})
         List<Button> newsChannels;
         public FriendsAdapter(Context context, List<Topic> items, FlipSettings settings) {
             super(context, items, settings);
+            PAGES = (int) Math.ceil((float) items.size() / 2.0);
         }
 
         @Override
@@ -177,7 +174,6 @@ public class MainFragment extends Fragment{
             } else {
                 holder = (FriendsHolder) convertView.getTag();
             }
-            if (topic1 != null && topic2 != null) {
 
                 switch (position) {
                     // Merged page with 2 TOPICs
@@ -185,16 +181,17 @@ public class MainFragment extends Fragment{
 
                         Picasso.with(getActivity()).load(topic1.getAvatar()).into(holder.leftAvatar);
                         holder.title1.setText(topic1.getTopic());
-                        if (topic2 != null)
+                        if (topic2 != null) {
                             Picasso.with(getActivity()).load(topic2.getAvatar()).into(holder.rightAvatar);
-                        holder.title2.setText(topic2.getTopic());
+                            holder.title2.setText(topic2.getTopic());
+                        }
+
                         break;
                     default:
                         fillHolder(holder, position == 0 ? topic1 : topic2);
                         holder.infoPage.setTag(holder);
                         return holder.infoPage;
                 }
-            }
             return convertView;
         }
 
@@ -204,45 +201,46 @@ public class MainFragment extends Fragment{
         }
 
         private void fillHolder(FriendsHolder holder, final Topic topic) {
-            if (topic == null)
+            if (topic == null) {
                 return;
-            Iterator<Button> iViews = holder.interests.iterator();
-            final Iterator<StringObject> iInterests = topic.getInterests().iterator();
-            while (iViews.hasNext()) {
-                final Button button = iViews.next();
-                button.setClickable(true);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        switch (v.getId())
-                        {
-                            case  R.id.interest_1:
-                            myParentActivity.setUrl(topic.getLinks().get(0).string);
-                            break;
-                            case  R.id.interest_2:
-                                myParentActivity.setUrl(topic.getLinks().get(1).string);
-                                break;
-                            case  R.id.interest_3:
-                                myParentActivity.setUrl(topic.getLinks().get(2).string);
-                                break;
-                            case  R.id.interest_4:
-                                myParentActivity.setUrl(topic.getLinks().get(3).string);
-                                break;
-                            case  R.id.interest_5:
-                                myParentActivity.setUrl(topic.getLinks().get(4).string);
-                                break;
-                            case  R.id.interest_6:
-                                myParentActivity.setUrl(topic.getLinks().get(5).string);
-                                break;
-                        }
-
-                    }
-                });
-                if (iInterests.hasNext()) {
-                    button.setText(iInterests.next().string);
-                }
-//                holder.infoPage.setBackgroundColor(ContextCompat.getColor(getContext(),topic.getBackground()));
             }
+            for (Button button : holder.interests){
+                if (topic.getInterests().size() > holder.interests.indexOf(button)) {
+                    button.setClickable(true);
+                    button.setText(topic.getInterests().get(holder.interests.indexOf(button)).string);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            switch (v.getId()) {
+                                case R.id.interest_1:
+                                    myParentActivity.setUrl(topic.getLinks().get(0).string);
+                                    break;
+                                case R.id.interest_2:
+                                    myParentActivity.setUrl(topic.getLinks().get(1).string);
+                                    break;
+                                case R.id.interest_3:
+                                    myParentActivity.setUrl(topic.getLinks().get(2).string);
+                                    break;
+                                case R.id.interest_4:
+                                    myParentActivity.setUrl(topic.getLinks().get(3).string);
+                                    break;
+                                case R.id.interest_5:
+                                    myParentActivity.setUrl(topic.getLinks().get(4).string);
+                                    break;
+                                case R.id.interest_6:
+                                    myParentActivity.setUrl(topic.getLinks().get(5).string);
+                                    break;
+                            }
+
+                        }
+                    });
+                }
+                else{
+                    button.setVisibility(View.GONE);
+                }
+            }
+            final Iterator<StringObject> iInterests = topic.getInterests().iterator();
+
         }
         class FriendsHolder {
             ImageView leftAvatar;
