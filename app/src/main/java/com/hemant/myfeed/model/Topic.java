@@ -3,6 +3,7 @@ package com.hemant.myfeed.model;
 import com.hemant.myfeed.R;
 
 import java.util.Map;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -19,8 +20,8 @@ public class Topic extends RealmObject {
 
    @PrimaryKey private String topic;
     public int background;
-    public String mainLink;
-    public RealmList<StringObject> interests = new RealmList<>();
+    private String mainLink;
+    private RealmList<StringObject> interests = new RealmList<>();
     public RealmList<StringObject> getLinks() {
         return links;
     }
@@ -51,6 +52,8 @@ public class Topic extends RealmObject {
                 this.avatar = R.drawable.science;
             case "Entertainment" :
                 this.avatar = R.drawable.entertainment;
+            case "Comics":
+                this.avatar = R.drawable.comic;
             default:
                 this.avatar = R.mipmap.ic_launcher;
         }
@@ -64,7 +67,7 @@ public class Topic extends RealmObject {
         }
 
         }
-        this.mainLink = this.links.get(0).string;
+        this.mainLink = Objects.requireNonNull(this.links.get(0)).string;
     }
     public String getTopic() {
         return topic;
@@ -88,6 +91,8 @@ public class Topic extends RealmObject {
                 return R.drawable.science;
             case "Entertainment" :
                 return R.drawable.entertainment;
+            case "Comics":
+                return R.drawable.comic;
             default:
                 return R.mipmap.ic_launcher;
         }

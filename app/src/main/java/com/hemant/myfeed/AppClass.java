@@ -6,12 +6,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
-import com.einmalfel.earl.Item;
 import com.firebase.client.Firebase;
 import com.zplesac.connectionbuddy.ConnectionBuddy;
 import com.zplesac.connectionbuddy.ConnectionBuddyConfiguration;
-
-import java.util.ArrayList;
 
 import io.realm.Realm;
 

@@ -31,6 +31,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.ads.MobileAds;
 import com.hemant.myfeed.R;
 import com.hemant.myfeed.fragments.BlankFragment;
 import com.hemant.myfeed.fragments.MainFragment;
@@ -47,7 +48,7 @@ import com.zplesac.connectionbuddy.models.ConnectivityState;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -69,11 +70,10 @@ public class MainActivity extends AppCompatActivity
 
     MainFragment mainFragment = new MainFragment();
     String url = "http://www.majorgeeks.com/news/rss/news.xml";
-    @Bind(R.id.nav_view)
+    @BindView(R.id.nav_view)
     NavigationView navigationView;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState != null){
             ConnectionBuddyCache.clearLastNetworkState(this);
         }
-
         ButterKnife.bind(this);
+        MobileAds.initialize(this, "ca-app-pub-4083824684818051~6248546920");
         ConnectionBuddy.getInstance().registerForConnectivityEvents(this, this);
         Realm.init(getApplicationContext());
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().name(Realm.DEFAULT_REALM_NAME)
@@ -97,12 +97,12 @@ public class MainActivity extends AppCompatActivity
         progressDialog.setTitle("Fetching");
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
-
         progressDialog.show();
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.flipy);
         rotation.setFillAfter(true);
         progressDialog.show();
         setSupportActionBar(toolbar);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -178,7 +178,10 @@ public class MainActivity extends AppCompatActivity
     public boolean isOnline() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        NetworkInfo networkInfo = null;
+        if (connMgr != null) {
+            networkInfo = connMgr.getActiveNetworkInfo();
+        }
         return (networkInfo != null && networkInfo.isConnected());
     }
     @Override

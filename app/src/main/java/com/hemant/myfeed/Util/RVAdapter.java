@@ -1,42 +1,24 @@
 package com.hemant.myfeed.Util;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.einmalfel.earl.Item;
-
-import com.hemant.myfeed.AppClass;
 import com.hemant.myfeed.R;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
@@ -44,13 +26,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
     CustomItemClickListener listener;
     public static class PersonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @Bind(R.id.cv)
+        @BindView(R.id.cv)
         CardView cv;
-        @Bind(R.id.person_name)
+        @BindView(R.id.person_name)
         TextView titleLabel;
-        @Bind(R.id.person_age)
+        @BindView(R.id.person_age)
         WebView webview;
-        @Bind(R.id.person_photo)
+        @BindView(R.id.person_photo)
         ImageView Photo;
 
 
@@ -88,9 +70,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
     @Override
     public PersonViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
-        final PersonViewHolder pvh = new PersonViewHolder(v);
-
-        return pvh;
+        return new PersonViewHolder(v);
     }
 
     @Override

@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -48,7 +49,7 @@ public class MainFragment extends Fragment{
      MainActivity myParentActivity;
     // TODO: Rename and change types of parameters
     private String mParam1;
-    @Bind(R.id.friends)
+    @BindView(R.id.friends)
     public ListView friends;
 
     private String mParam2;
@@ -147,7 +148,7 @@ public class MainFragment extends Fragment{
 
         int PAGES = 3;
         private int[] IDS_INTEREST = {R.id.interest_1, R.id.interest_2, R.id.interest_3,R.id.interest_4,R.id.interest_5,R.id.interest_6};
-        @Bind({R.id.interest_1, R.id.interest_2, R.id.interest_3,R.id.interest_4,R.id.interest_5,R.id.interest_6})
+        @BindViews({R.id.interest_1, R.id.interest_2, R.id.interest_3,R.id.interest_4,R.id.interest_5,R.id.interest_6})
         List<Button> newsChannels;
         public FriendsAdapter(Context context, List<Topic> items, FlipSettings settings) {
             super(context, items, settings);
@@ -254,6 +255,6 @@ public class MainFragment extends Fragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
+
     }
 }

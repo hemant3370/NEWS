@@ -21,6 +21,8 @@ import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Enclosure;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.hemant.myfeed.R;
 import com.hemant.myfeed.Util.CustomItemClickListener;
 import com.hemant.myfeed.Util.RVAdapter;
@@ -33,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -50,8 +52,10 @@ public class BlankFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
-    @Bind(R.id.rv)
+    @BindView(R.id.rv)
     ShimmerRecyclerView rv;
+    @BindView(R.id.adView)
+    AdView adView;
     private ArrayList<Item> RssItems;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -98,6 +102,8 @@ public class BlankFragment extends Fragment {
         rv.setHasFixedSize(false);
         rv.showShimmerAdapter();
         RssItems = new ArrayList<>();
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
         new GetRssFeed().execute(mParam1);
 //        new GetRssFeed().execute("http://feeds.reuters.com/reuters/INoddlyEnoughNews");
         return rootView;
@@ -256,7 +262,6 @@ public class BlankFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
-    }
+        }
 
 }
