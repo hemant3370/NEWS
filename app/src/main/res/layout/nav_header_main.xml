@@ -12,23 +12,23 @@
     android:gravity="bottom">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:layout_width="@dimen/nav_header_icon_dimen"
+        android:layout_height="@dimen/nav_header_icon_dimen"
+        android:layout_gravity="center_horizontal"
         android:src="@mipmap/ic_launcher"
         android:id="@+id/imageView" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="NEWS"
+        android:text="@string/app_title"
+        android:textSize="@dimen/app_title_text_size"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="By Hemant Singh"
+        android:text="@string/app_developer"
         android:id="@+id/textView" />
 
 </LinearLayout>

@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_home"
-            android:title="Home" />
+            android:title="@string/home" />
 
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@android:drawable/btn_star_big_on"
+            android:title="@string/rate" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:title="@string/about" />
 
-
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@android:drawable/btn_star_big_on"
-                android:title="Rate" />
-            <item
-                android:id="@+id/nav_about"
-                android:icon="@android:drawable/ic_dialog_info"
-                android:title="About" />
-
-         </group>
+    </group>
 </menu>

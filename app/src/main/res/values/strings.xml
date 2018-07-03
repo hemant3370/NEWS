@@ -13,4 +13,9 @@
     <string name="title_activity_news_tabbed">NewsTabbedActivity</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="home">Home</string>
+    <string name="rate">Rate</string>
+    <string name="about">About</string>
+    <string name="app_title">NEWS</string>
+    <string name="app_developer">By Hemant Singh</string>
 </resources>
