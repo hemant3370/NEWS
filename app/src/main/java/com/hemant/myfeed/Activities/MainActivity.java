@@ -221,11 +221,22 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
         }
+            else if(id==R.id.nav_copy)
+            {
+                    copyUrl();
+            }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+private void copyUrl(){
+        String urlToCopy=webView.getUrl();
 
+        ClipboardManager cb=(ClipboardManager)this.getSystemService(Context.CLIPBOARD_SERVICE);
+        cb.setText(urlToCopy);
+
+        Toast.makeText(this,"URL copied...",Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void onFragmentInteraction(Uri uri) {
 
